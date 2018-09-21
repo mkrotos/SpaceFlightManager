@@ -7,6 +7,8 @@ import java.util.List;
 public interface TouristService {
 
     List<Tourist> findAll();
+
     void add(Tourist tourist);
+
     void deleteById(Long id);
 }

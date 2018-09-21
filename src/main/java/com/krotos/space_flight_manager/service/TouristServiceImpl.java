@@ -15,16 +15,17 @@ public class TouristServiceImpl implements TouristService {
     private TouristRepository touristRepository;
 
     @Override
-    public List<Tourist> findAll(){
+    public List<Tourist> findAll() {
         return touristRepository.findAll();
-
     }
+
     @Override
-    public void add(Tourist tourist){
+    public void add(Tourist tourist) {
         touristRepository.save(tourist);
     }
+
     @Override
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         touristRepository.deleteById(id);
     }
 
