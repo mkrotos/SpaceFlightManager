@@ -3,7 +3,7 @@ package com.krotos.space_flight_manager.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 public class Tourist {
