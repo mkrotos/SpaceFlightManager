@@ -91,4 +91,18 @@ public class Tourist {
     public void setFlightList(List<Flight> flightList) {
         this.flightList = flightList;
     }
+
+    @Override
+    public String toString() {
+        return "Tourist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", country='" + country + '\'' +
+                ", notes='" + notes + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", flightList=" + flightList +
+                '}';
+    }
 }

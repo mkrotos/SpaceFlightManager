@@ -15,16 +15,17 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> findAll() {
+        flightRepository.findAll();
         return null;
     }
 
     @Override
     public void add(Flight flight) {
-
+        flightRepository.save(flight);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        flightRepository.deleteById(id);
     }
 }
