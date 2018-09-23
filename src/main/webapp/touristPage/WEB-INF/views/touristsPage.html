@@ -11,7 +11,7 @@
 <body>
 <div class="navbar">
     <div class="navbar-inner">
-        <a class="brand" href="#">Space Flight Manager - tourists manager</a>
+        <a class="brand" href="#">Space Flight Manager - tourists</a>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
             <td><b>Surname</b></td>
             <td><b>Options</b></td>
         </tr>
-        <!-- ko foreach: tasks -->
+        <!-- ko foreach: tourists -->
         <tr>
 
             <td><p><b data-bind="text: id"></b></p></td>
@@ -49,112 +49,159 @@
     <div class="modal-body">
         <form class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="inputTask">Task</label>
+                <label class="control-label" for="inputTask">Name</label>
                 <div class="controls">
-                    <input data-bind="value: title" type="text" id="inputTask" placeholder="Task title"
+                    <input data-bind="value: name" type="text" id="inputTask" placeholder="Task title"
                            style="width: 150px;">
                 </div>
             </div>
+
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Description</label>
+                <label class="control-label" for="inputDescription">Surname</label>
                 <div class="controls">
-                    <input data-bind="value: description" type="text" id="inputDescription" placeholder="Description"
+                    <input data-bind="value: surname" type="text" id="inputDescription" placeholder="Description"
                            style="width: 300px;">
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDescription">Sex</label>
+                <div class="controls">
+                    <input data-bind="value: sex" type="text" id="inputSex" placeholder="Description"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDescription">Country</label>
+                <div class="controls">
+                    <input data-bind="value: country" type="text" id="inputCountry" placeholder="Description"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDescription">Notes</label>
+                <div class="controls">
+                    <input data-bind="value: notes" type="text" id="inputNotes" placeholder="Description"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDescription">DateOfBirth</label>
+                <div class="controls">
+                    <input data-bind="value: dateOfBirth" type="text" id="inputDateOfBirth"
+                           placeholder="Description"
+                           style="width: 300px;">
+                </div>
+            </div>
+
         </form>
     </div>
     <div class="modal-footer">
         <button data-bind="click: addTask" class="btn btn-primary">Add Task</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
+</div>
 
+<script type="text/javascript">
+    function TasksViewModel() {
+        var self = this;
+        self.touristsURI = 'http://localhost:8080/tourists/';
 
-    <script type="text/javascript">
-        function TasksViewModel() {
-            var self = this;
-            self.tasksURI = 'http://localhost:8080/tourists/';
+        self.tourists = ko.observableArray();
 
-            self.tasks = ko.observableArray();
-
-            self.ajax = function (uri, method, data) {
-                var request = {
-                    url: uri,
-                    type: method,
-                    contentType: "application/json",
-                    accepts: "application/json",
-                    cache: false,
-                    dataType: 'json',
-                    data: JSON.stringify(data),
-                    error: function (jqXHR) {
-                        console.log("ajax error " + jqXHR.status);
-                    }
-                };
-                return $.ajax(request);
-            }
-
-            self.beginAdd = function () {
-                $('#add').modal('show');
-            }
-            self.beginEdit = function (task) {
-                alert("Edit: " + task.title());
-            }
-            self.remove = function (task) {
-                alert("Remove: " + task.title());
-            }
-            self.markInProgress = function (task) {
-                task.done(false);
-            }
-            self.markDone = function (task) {
-                task.done(true);
-            }
-
-            self.ajax(self.tasksURI, 'GET').done(function (data) {
-                for (var i = 0; i < data.tasks.length; i++) {
-                    self.tasks.push({
-                        uri: ko.observable(data.tasks[i].uri),
-                        id: ko.observable(data.tasks[i].id),
-                        name: ko.observable(data.tasks[i].name),
-                        surname: ko.observable(data.tasks[i].surname),
-                        done: ko.observable(data.tasks[i].done)
-                    });
+        self.ajax = function (uri, method, data) {
+            var request = {
+                url: uri,
+                type: method,
+                contentType: "application/json",
+                accepts: "application/json",
+                cache: false,
+                dataType: 'json',
+                data: JSON.stringify(data),
+                error: function (jqXHR) {
+                    console.log("ajax error " + jqXHR.status);
                 }
+            };
+            return $.ajax(request);
+        }
+
+        self.beginAdd = function () {
+            $('#add').modal('show');
+        }
+        self.beginEdit = function (task) {
+            alert("Edit: " + task.name());
+        }
+        self.remove = function (task) {
+            alert("Remove: " + task.name());
+        }
+        self.markInProgress = function (task) {
+            task.done(false);
+        }
+        self.markDone = function (task) {
+            task.done(true);
+        }
+
+        self.ajax(self.touristsURI, 'GET').done(function (data) {
+            for (var i = 0; i < data.tourists.length; i++) {
+                self.tourists.push({
+                    name: ko.observable(data.tourists[i].name),
+                    surname: ko.observable(data.tourists[i].surname),
+                    sex: ko.observable(data.tourists[i].sex),
+                    country: ko.observable(data.tourists[i].country),
+                    notes: ko.observable(data.tourists[i].notes),
+                    dateOfBirth: ko.observable(data.tourists[i].dateOfBirth)
+
+                });
+            }
+        });
+
+        self.add = function (task) {
+            self.ajax(self.touristsURI, 'POST', task).done(function (data) {
+                self.tourists.push({
+                    name: ko.observable(data.task.name),
+                    surname: ko.observable(data.task.surname),
+                    sex: ko.observable(data.task.sex),
+                    country: ko.observable(data.task.country),
+                    notes: ko.observable(data.task.notes),
+                    dateOfBirth: ko.observable(data.task.dateOfBirth)
+                });
             });
+        }
+    }
 
-            self.add = function (task) {
-                self.ajax(self.tasksURI, 'POST', task).done(function (data) {
-                    self.tasks.push({
-                        uri: ko.observable(data.task.uri),
-                        title: ko.observable(data.task.title),
-                        description: ko.observable(data.task.description),
-                        done: ko.observable(data.task.done)
-                    });
-                });
-            }
+    function AddTaskViewModel() {
+        var self = this;
+        self.name = ko.observable();
+        self.surname = ko.observable();
+        self.sex = ko.observable();
+        self.country = ko.observable();
+        self.notes = ko.observable();
+        self.dateOfBirth = ko.observable();
+
+        self.addTask = function () {
+            $('#add').modal('hide');
+            tasksViewModel.add({
+                name: self.name(),
+                surname: self.surname(),
+                sex: self.sex(),
+                country: self.country(),
+                notes: self.notes(),
+                dateOfBirth: self.dateOfBirth()
+            });
+            self.name("");
+            self.surname("");
+            self.sex("");
+            self.country("");
+            self.notes("");
+            self.dateOfBirth("");
         }
 
-        function AddTaskViewModel() {
-            var self = this;
-            self.title = ko.observable();
-            self.description = ko.observable();
+    }
 
-            self.addTask = function () {
-                $('#add').modal('hide');
-                tasksViewModel.add({
-                    title: self.title(),
-                    description: self.description()
-                });
-                self.title("");
-                self.description("");
-            }
-
-        }
-
-        var tasksViewModel = new TasksViewModel();
-        var addTaskViewModel = new AddTaskViewModel();
-        ko.applyBindings(tasksViewModel, $('#main')[0]);
-        ko.applyBindings(addTaskViewModel, $('#add')[0]);
-    </script>
+    var tasksViewModel = new TasksViewModel();
+    var addTaskViewModel = new AddTaskViewModel();
+    ko.applyBindings(tasksViewModel, $('#main')[0]);
+    ko.applyBindings(addTaskViewModel, $('#add')[0]);
+</script>
 
 </body>
 </html>
