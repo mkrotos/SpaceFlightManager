@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Space Flight Manager - tourists manager</title>
+    <title>Space Flight Manager - Tourists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
@@ -11,7 +11,7 @@
 <body>
 <div class="navbar">
     <div class="navbar-inner">
-        <a class="brand" href="#">Space Flight Manager - tourists</a>
+        <a class="brand" href="#">Space Flight Manager - Tourists</a>
     </div>
 </div>
 
@@ -51,43 +51,43 @@
     <div class="modal-body">
         <form class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="inputTask">Name</label>
+                <label class="control-label" for="inputName">Name</label>
                 <div class="controls">
-                    <input data-bind="value: name" type="text" id="inputTask" placeholder="Name"
+                    <input data-bind="value: name" type="text" id="inputName" placeholder="Name"
                            style="width: 150px;">
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Surname</label>
+                <label class="control-label" for="inputSurname">Surname</label>
                 <div class="controls">
-                    <input data-bind="value: surname" type="text" id="inputDescription" placeholder="Surname"
+                    <input data-bind="value: surname" type="text" id="inputSurname" placeholder="Surname"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Sex</label>
+                <label class="control-label" for="inputSurname">Sex</label>
                 <div class="controls">
                     <input data-bind="value: sex" type="text" id="inputSex" placeholder="ex man"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Country</label>
+                <label class="control-label" for="inputSurname">Country</label>
                 <div class="controls">
                     <input data-bind="value: country" type="text" id="inputCountry" placeholder="ex Poland"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Notes</label>
+                <label class="control-label" for="inputSurname">Notes</label>
                 <div class="controls">
                     <input data-bind="value: notes" type="text" id="inputNotes" placeholder="ex preferences"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputDescription">Date of birth</label>
+                <label class="control-label" for="inputSurname">Date of birth</label>
                 <div class="controls">
                     <input data-bind="value: dateOfBirth" type="text" id="inputDateOfBirth"
                            placeholder="ex 1987-09-01"
@@ -98,13 +98,13 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button data-bind="click: addTask" class="btn btn-primary">Add Tourist</button>
+        <button data-bind="click: addTourist" class="btn btn-primary">Add Tourist</button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
     </div>
 </div>
 
 <script type="text/javascript">
-    function TasksViewModel() {
+    function TouristsViewModel() {
         var self = this;
         self.touristsURI = 'http://localhost:8080/tourists/';
 
@@ -130,17 +130,20 @@
         self.beginAdd = function () {
             $('#add').modal('show');
         }
-        self.beginEdit = function (task) {
-            alert("Edit: " + task.name());
+        self.beginEdit = function (tourist) {
+            alert("Edit: " + tourist.name());
         }
-        self.remove = function (task) {
-            alert("Remove: " + task.name());
+        self.remove = function (tourist) {
+            self.ajax(self.touristsURI+tourist.id(),'DELETE').done(function () {
+                self.tourists.remove(tourist);
+            })
+
         }
-        self.markInProgress = function (task) {
-            task.done(false);
+        self.markInProgress = function (tourist) {
+            tourist.done(false);
         }
-        self.markDone = function (task) {
-            task.done(true);
+        self.markDone = function (tourist) {
+            tourist.done(true);
         }
 
         self.ajax(self.touristsURI, 'GET').done(function (data) {
@@ -158,9 +161,9 @@
             }
         });
 
-        self.add = function (task) {
-            self.ajax(self.touristsURI, 'POST', task).done(function (data) {
-                console.log(data.toString());
+        self.add = function (tourist) {
+            self.ajax(self.touristsURI, 'POST', tourist).done(function (data) {
+                console.log(data);
                 self.tourists.push({
                     id:ko.observable(data.id),
                     name: ko.observable(data.name),
@@ -174,7 +177,7 @@
         }
     }
 
-    function AddTaskViewModel() {
+    function AddTouristViewModel() {
         var self = this;
         self.name = ko.observable();
         self.surname = ko.observable();
@@ -183,9 +186,9 @@
         self.notes = ko.observable();
         self.dateOfBirth = ko.observable();
 
-        self.addTask = function () {
+        self.addTourist = function () {
             $('#add').modal('hide');
-            tasksViewModel.add({
+            touristsViewModel.add({
                 name: self.name(),
                 surname: self.surname(),
                 sex: self.sex(),
@@ -203,10 +206,10 @@
 
     }
 
-    var tasksViewModel = new TasksViewModel();
-    var addTaskViewModel = new AddTaskViewModel();
-    ko.applyBindings(tasksViewModel, $('#main')[0]);
-    ko.applyBindings(addTaskViewModel, $('#add')[0]);
+    var touristsViewModel = new TouristsViewModel();
+    var addTouristViewModel = new AddTouristViewModel();
+    ko.applyBindings(touristsViewModel, $('#main')[0]);
+    ko.applyBindings(addTouristViewModel, $('#add')[0]);
 </script>
 
 </body>
