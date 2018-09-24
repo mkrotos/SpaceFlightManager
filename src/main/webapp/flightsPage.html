@@ -31,10 +31,9 @@
         </tr>
         <!-- ko foreach: flights -->
         <tr>
-
             <td><p><b data-bind="text: id"></b></p></td>
-            <td><p><b data-bind="String: departureDate"></b></p></td>
-            <td><p><b data-bind="String: departureTime"></b></p></td>
+            <td><p><b data-bind="text: departureDate"></b></p></td>
+            <td><p><b data-bind="text: departureTime"></b></p></td>
             <td><p><b data-bind="text: arrivalDate"></b></p></td>
             <td><p><b data-bind="text: arrivalTime"></b></p></td>
             <td><p><b data-bind="text: numberOfSeats"></b></p></td>
@@ -89,7 +88,8 @@
             <div class="control-group">
                 <label class="control-label" for="inputNumberOfSeats">Number of seats</label>
                 <div class="controls">
-                    <input data-bind="value: numberOfSeats" type="text" id="inputNumberOfSeats" placeholder="ex preferences"
+                    <input data-bind="value: numberOfSeats" type="text" id="inputNumberOfSeats"
+                           placeholder="ex preferences"
                            style="width: 300px;">
                 </div>
             </div>
@@ -154,31 +154,41 @@
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
             console.log(data);
-            for (var i = 0; i < data.length; i++) {
+            console.log(data._embedded.flights);
+            for (var i = 0; i < data._embedded.flights.length; i++) {
                 self.flights.push({
-                    id: ko.observable(data[i].id),
-                    departureDate: ko.observable(data[i].departureDateTime),
-                    departureTime: ko.observable(data[i].departureDateTime),
-                    arrivalDate: ko.observable(data[i].arrivalDateTime),
-                    arrivalTime: ko.observable(data[i].arrivalDateTime),
-                    numberOfSeats: ko.observable(data[i].numberOfSeats),
-                    ticketPrice: ko.observable(data[i].ticketPrice)
+                    id: ko.observable(data._embedded.flights[i].id),
+                    departureDate: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[0]),
+                    departureTime: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[1]),
+                    arrivalDate: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[0]),
+                    arrivalTime: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[1]),
+                    numberOfSeats: ko.observable(data._embedded.flights[i].numberOfSeats),
+                    ticketPrice: ko.observable(data._embedded.flights[i].ticketPrice)
 
                 });
             }
         });
 
         self.add = function (flight) {
-            self.ajax(self.flightsURI, 'POST', flight).done(function (data) {
+            var flightToSend = {
+                id: null,
+                departureDateTime: flight.departureDate + "T" + flight.departureTime,
+                arrivalDateTime: flight.arrivalDate + "T" + flight.arrivalTime,
+                numberOfSeats: flight.numberOfSeats,
+                touristList: null,
+                ticketPrice: flight.ticketPrice
+            }
+            console.log(flightToSend);
+            self.ajax(self.flightsURI, 'POST', flightToSend).done(function (data) {
                 console.log(data);
                 self.flights.push({
                     id: ko.observable(data.id),
-                    departureDate: ko.observable(data.name),
-                    departureTime: ko.observable(data.surname),
-                    arrivalDate: ko.observable(data.sex),
-                    arrivalTime: ko.observable(data.country),
-                    numberOfSeats: ko.observable(data.notes),
-                    ticketPrice: new Date(ko.observable(data.dateOfBirth))
+                    departureDate: ko.observable(data.departureDateTime.split("T")[0]),
+                    departureTime: ko.observable(data.departureDateTime.split("T")[1]),
+                    arrivalDate: ko.observable(data.arrivalDateTime.split("T")[0]),
+                    arrivalTime: ko.observable(data.arrivalDateTime.split("T")[1]),
+                    numberOfSeats: ko.observable(data.numberOfSeats),
+                    ticketPrice: new Date(ko.observable(data.ticketPrice))
                 });
             });
         }

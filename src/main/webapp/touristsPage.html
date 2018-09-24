@@ -154,7 +154,7 @@
         }
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
-            //console.log(data);
+            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 self.flights.push({
                     id: ko.observable(data[i].id),
@@ -196,7 +196,7 @@
         self.notes = ko.observable();
         self.dateOfBirth = ko.observable();
 
-        self.addFlight = function () {
+        self.addTourist = function () {
             $('#add').modal('hide');
             touristsViewModel.add({
                 name: self.name(),
