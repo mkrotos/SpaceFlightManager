@@ -112,8 +112,8 @@
             var request = {
                 url: uri,
                 type: method,
-                contentType: "application/json",
-                accepts: "application/json",
+                //contentType: "application/json",
+                //accepts: "application/json",
                 cache: false,
                 dataType: 'json',
                 data: JSON.stringify(data),
@@ -141,14 +141,15 @@
         }
 
         self.ajax(self.touristsURI, 'GET').done(function (data) {
-            for (var i = 0; i < data.tourists.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 self.tourists.push({
-                    name: ko.observable(data.tourists[i].name),
-                    surname: ko.observable(data.tourists[i].surname),
-                    sex: ko.observable(data.tourists[i].sex),
-                    country: ko.observable(data.tourists[i].country),
-                    notes: ko.observable(data.tourists[i].notes),
-                    dateOfBirth: ko.observable(data.tourists[i].dateOfBirth)
+                    id: ko.observable(data[i].id),
+                    name: ko.observable(data[i].name),
+                    surname: ko.observable(data[i].surname),
+                    sex: ko.observable(data[i].sex),
+                    country: ko.observable(data[i].country),
+                    notes: ko.observable(data[i].notes),
+                    dateOfBirth: ko.observable(data[i].dateOfBirth)
 
                 });
             }
