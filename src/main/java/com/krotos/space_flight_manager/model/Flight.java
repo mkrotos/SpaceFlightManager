@@ -14,7 +14,6 @@ public class Flight {
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
     private int numberOfSeats;
-
     @ManyToMany(mappedBy = "flightList")
     private List<Tourist> touristList;
     private double ticketPrice;

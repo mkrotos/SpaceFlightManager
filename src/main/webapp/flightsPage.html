@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Space Flight Manager - Flights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" href="#">Space Flight Manager - Flights</a>
+    </div>
+</div>
+
+<!-- Flights table-->
+<div id="main" class="container">
+    <table class="table table-striped">
+        <tr>
+            <td style="width: 1px;"><b>Id</b></td>
+            <td><b>Departure date</b></td>
+            <td><b>Departure time</b></td>
+            <td><b>Arrival date</b></td>
+            <td><b>Arrival time</b></td>
+            <td><b>Number of seats</b></td>
+            <td><b>Ticket price</b></td>
+            <td><b>Options</b></td>
+        </tr>
+        <!-- ko foreach: flights -->
+        <tr>
+
+            <td><p><b data-bind="text: id"></b></p></td>
+            <td><p><b data-bind="text: departureDate"></b></p></td>
+            <td><p><b data-bind="text: departureTime"></b></p></td>
+            <td><p><b data-bind="text: arrivalDate"></b></p></td>
+            <td><p><b data-bind="text: arrivalTime"></b></p></td>
+            <td><p><b data-bind="text: numberOfSeats"></b></p></td>
+            <td><p><b data-bind="text: ticketPrice"></b></p></td>
+            <td>
+                <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
+                <button data-bind="click: $parent.remove" class="btn">Delete</button>
+            </td>
+        </tr>
+        <!-- /ko -->
+    </table>
+    <button data-bind="click: beginAdd" class="btn">Add Flight</button>
+</div>
+
+<!-- Add tourist form-->
+<div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="addDialogLabel">Add Flight</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputDepartureDate">Departure date</label>
+                <div class="controls">
+                    <input data-bind="value: departureDate" type="text" id="inputDepartureDate" placeholder="Name"
+                           style="width: 150px;">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inputDepartureTime">Departure time</label>
+                <div class="controls">
+                    <input data-bind="value: departureTime" type="text" id="inputDepartureTime" placeholder="Surname"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputArrivalDate">Arrival date</label>
+                <div class="controls">
+                    <input data-bind="value: arrivalDate" type="text" id="inputArrivalDate" placeholder="ex man"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputArrivalTime">Arrival time</label>
+                <div class="controls">
+                    <input data-bind="value: arrivalTime" type="text" id="inputArrivalTime" placeholder="ex Poland"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputNumberOfSeats">Number of seats</label>
+                <div class="controls">
+                    <input data-bind="value: numberOfSeats" type="text" id="inputNumberOfSeats" placeholder="ex preferences"
+                           style="width: 300px;">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputTicketPrice">Ticket price</label>
+                <div class="controls">
+                    <input data-bind="value: ticketPrice" type="text" id="inputTicketPrice"
+                           placeholder="ex 1987-09-01"
+                           style="width: 300px;">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button data-bind="click: addFlight" class="btn btn-primary">Add Flight</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function FlightsViewModel() {
+        var self = this;
+        self.flightsURI = 'http://localhost:8080/flights/';
+
+        self.flights = ko.observableArray();
+
+        self.ajax = function (uri, method, data) {
+            var request = {
+                url: uri,
+                type: method,
+                contentType: "application/json",
+                //accepts: "application/json",
+                cache: false,
+                //dataType: 'json',
+                data: JSON.stringify(data),
+                error: function (jqXHR) {
+                    console.log("ajax error " + jqXHR.status);
+                }
+            };
+            return $.ajax(request);
+        }
+
+        self.beginAdd = function () {
+            $('#add').modal('show');
+        }
+        self.beginEdit = function (flight) {
+            alert("Edit: " + flight.name);
+        }
+        self.remove = function (flight) {
+            self.ajax(self.flightsURI + flight.id(), 'DELETE').done(function () {
+                self.flights.remove(flight);
+            })
+
+        }
+        self.markInProgress = function (flight) {
+            flight.done(false);
+        }
+        self.markDone = function (flight) {
+            flight.done(true);
+        }
+
+        self.ajax(self.flightsURI, 'GET').done(function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                self.flights.push({
+                    id: ko.observable(data[i].id),
+                    name: ko.observable(data[i].name),
+                    surname: ko.observable(data[i].surname),
+                    sex: ko.observable(data[i].sex),
+                    country: ko.observable(data[i].country),
+                    notes: ko.observable(data[i].notes),
+                    dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
+                        "-" + data[i].dateOfBirth[1] +
+                        "-" + data[i].dateOfBirth[2])
+
+                });
+            }
+        });
+
+        self.add = function (flight) {
+            self.ajax(self.flightsURI, 'POST', flight).done(function (data) {
+                console.log(data);
+                self.flights.push({
+                    id: ko.observable(data.id),
+                    name: ko.observable(data.name),
+                    surname: ko.observable(data.surname),
+                    sex: ko.observable(data.sex),
+                    country: ko.observable(data.country),
+                    notes: ko.observable(data.notes),
+                    dateOfBirth: new Date(ko.observable(data.dateOfBirth))
+                });
+            });
+        }
+    }
+
+    function AddFlightViewModel() {
+        var self = this;
+        self.name = ko.observable();
+        self.surname = ko.observable();
+        self.sex = ko.observable();
+        self.country = ko.observable();
+        self.notes = ko.observable();
+        self.dateOfBirth = ko.observable();
+
+        self.addTourist = function () {
+            $('#add').modal('hide');
+            fligthsViewModel.add({
+                name: self.name(),
+                surname: self.surname(),
+                sex: self.sex(),
+                country: self.country(),
+                notes: self.notes(),
+                dateOfBirth: self.dateOfBirth()
+            });
+            self.name("");
+            self.surname("");
+            self.sex("");
+            self.country("");
+            self.notes("");
+            self.dateOfBirth("");
+        }
+
+    }
+
+    var fligthsViewModel = new FlightsViewModel();
+    var addFlightViewModel = new AddFlightViewModel();
+    ko.applyBindings(fligthsViewModel, $('#main')[0]);
+    ko.applyBindings(addFlightViewModel, $('#add')[0]);
+</script>
+
+</body>
+</html>

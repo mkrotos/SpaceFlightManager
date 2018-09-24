@@ -8,16 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class FrontController {
 
     @RequestMapping("/")
-    public ModelAndView showIndex(ModelAndView model){
+    public ModelAndView showIndex(ModelAndView model) {
         model.setViewName("index");
         return model;
     }
-
-    @RequestMapping("touristPage/")
-    public ModelAndView showTouristPage(ModelAndView model){
-        model.setViewName("touristsPage");
-        return model;
-    }
-
-
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Space Flight Manager - Tourists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -28,7 +29,7 @@
             <td><b>Date of birth</b></td>
             <td><b>Options</b></td>
         </tr>
-        <!-- ko foreach: tourists -->
+        <!-- ko foreach: flights -->
         <tr>
 
             <td><p><b data-bind="text: id"></b></p></td>
@@ -112,9 +113,9 @@
 <script type="text/javascript">
     function TouristsViewModel() {
         var self = this;
-        self.touristsURI = 'http://localhost:8080/tourists/';
+        self.flightsURI = 'http://localhost:8080/tourists/';
 
-        self.tourists = ko.observableArray();
+        self.flights = ko.observableArray();
 
         self.ajax = function (uri, method, data) {
             var request = {
@@ -140,8 +141,8 @@
             alert("Edit: " + tourist.name);
         }
         self.remove = function (tourist) {
-            self.ajax(self.touristsURI+tourist.id(),'DELETE').done(function () {
-                self.tourists.remove(tourist);
+            self.ajax(self.flightsURI+tourist.id(),'DELETE').done(function () {
+                self.flights.remove(tourist);
             })
 
         }
@@ -152,10 +153,10 @@
             tourist.done(true);
         }
 
-        self.ajax(self.touristsURI, 'GET').done(function (data) {
+        self.ajax(self.flightsURI, 'GET').done(function (data) {
             //console.log(data);
             for (var i = 0; i < data.length; i++) {
-                self.tourists.push({
+                self.flights.push({
                     id: ko.observable(data[i].id),
                     name: ko.observable(data[i].name),
                     surname: ko.observable(data[i].surname),
@@ -171,9 +172,9 @@
         });
 
         self.add = function (tourist) {
-            self.ajax(self.touristsURI, 'POST', tourist).done(function (data) {
+            self.ajax(self.flightsURI, 'POST', tourist).done(function (data) {
                 console.log(data);
-                self.tourists.push({
+                self.flights.push({
                     id:ko.observable(data.id),
                     name: ko.observable(data.name),
                     surname: ko.observable(data.surname),
