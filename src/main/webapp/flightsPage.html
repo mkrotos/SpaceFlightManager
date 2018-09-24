@@ -33,8 +33,8 @@
         <tr>
 
             <td><p><b data-bind="text: id"></b></p></td>
-            <td><p><b data-bind="text: departureDate"></b></p></td>
-            <td><p><b data-bind="text: departureTime"></b></p></td>
+            <td><p><b data-bind="String: departureDate"></b></p></td>
+            <td><p><b data-bind="String: departureTime"></b></p></td>
             <td><p><b data-bind="text: arrivalDate"></b></p></td>
             <td><p><b data-bind="text: arrivalTime"></b></p></td>
             <td><p><b data-bind="text: numberOfSeats"></b></p></td>
@@ -157,14 +157,12 @@
             for (var i = 0; i < data.length; i++) {
                 self.flights.push({
                     id: ko.observable(data[i].id),
-                    name: ko.observable(data[i].name),
-                    surname: ko.observable(data[i].surname),
-                    sex: ko.observable(data[i].sex),
-                    country: ko.observable(data[i].country),
-                    notes: ko.observable(data[i].notes),
-                    dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
-                        "-" + data[i].dateOfBirth[1] +
-                        "-" + data[i].dateOfBirth[2])
+                    departureDate: ko.observable(data[i].departureDateTime),
+                    departureTime: ko.observable(data[i].departureDateTime),
+                    arrivalDate: ko.observable(data[i].arrivalDateTime),
+                    arrivalTime: ko.observable(data[i].arrivalDateTime),
+                    numberOfSeats: ko.observable(data[i].numberOfSeats),
+                    ticketPrice: ko.observable(data[i].ticketPrice)
 
                 });
             }
@@ -175,12 +173,12 @@
                 console.log(data);
                 self.flights.push({
                     id: ko.observable(data.id),
-                    name: ko.observable(data.name),
-                    surname: ko.observable(data.surname),
-                    sex: ko.observable(data.sex),
-                    country: ko.observable(data.country),
-                    notes: ko.observable(data.notes),
-                    dateOfBirth: new Date(ko.observable(data.dateOfBirth))
+                    departureDate: ko.observable(data.name),
+                    departureTime: ko.observable(data.surname),
+                    arrivalDate: ko.observable(data.sex),
+                    arrivalTime: ko.observable(data.country),
+                    numberOfSeats: ko.observable(data.notes),
+                    ticketPrice: new Date(ko.observable(data.dateOfBirth))
                 });
             });
         }
@@ -188,29 +186,29 @@
 
     function AddFlightViewModel() {
         var self = this;
-        self.name = ko.observable();
-        self.surname = ko.observable();
-        self.sex = ko.observable();
-        self.country = ko.observable();
-        self.notes = ko.observable();
-        self.dateOfBirth = ko.observable();
+        self.departureDate = ko.observable();
+        self.departureTime = ko.observable();
+        self.arrivalDate = ko.observable();
+        self.arrivalTime = ko.observable();
+        self.numberOfSeats = ko.observable();
+        self.ticketPrice = ko.observable();
 
-        self.addTourist = function () {
+        self.addFlight = function () {
             $('#add').modal('hide');
             fligthsViewModel.add({
-                name: self.name(),
-                surname: self.surname(),
-                sex: self.sex(),
-                country: self.country(),
-                notes: self.notes(),
-                dateOfBirth: self.dateOfBirth()
+                departureDate: self.departureDate(),
+                departureTime: self.departureTime(),
+                arrivalDate: self.arrivalDate(),
+                arrivalTime: self.arrivalTime(),
+                numberOfSeats: self.numberOfSeats(),
+                ticketPrice: self.ticketPrice()
             });
-            self.name("");
-            self.surname("");
-            self.sex("");
-            self.country("");
-            self.notes("");
-            self.dateOfBirth("");
+            self.departureDate("");
+            self.departureTime("");
+            self.arrivalDate("");
+            self.arrivalTime("");
+            self.numberOfSeats("");
+            self.ticketPrice("");
         }
 
     }
