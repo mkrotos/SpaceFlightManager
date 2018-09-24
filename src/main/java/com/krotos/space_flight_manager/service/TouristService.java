@@ -8,7 +8,7 @@ public interface TouristService {
 
     List<Tourist> findAll();
 
-    void add(Tourist tourist);
+    Tourist add(Tourist tourist);
 
     void deleteById(Long id);
 }

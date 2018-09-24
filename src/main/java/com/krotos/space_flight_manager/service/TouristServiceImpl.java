@@ -20,8 +20,9 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public void add(Tourist tourist) {
-        touristRepository.save(tourist);
+    public Tourist add(Tourist tourist) {
+        Tourist savedTourist= touristRepository.save(tourist);
+        return savedTourist;
     }
 
     @Override
