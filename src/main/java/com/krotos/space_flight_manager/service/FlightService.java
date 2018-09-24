@@ -8,7 +8,7 @@ public interface FlightService {
 
     List<Flight> findAll();
 
-    void add(Flight flight);
+    Flight add(Flight flight);
 
     void deleteById(Long id);
 }

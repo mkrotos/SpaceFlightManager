@@ -22,7 +22,10 @@
             <td style="width: 1px;"><b>Id</b></td>
             <td><b>Name</b></td>
             <td><b>Surname</b></td>
+            <td><b>Sex</b></td>
+            <td><b>Country</b></td>
             <td><b>Notes</b></td>
+            <td><b>Date of birth</b></td>
             <td><b>Options</b></td>
         </tr>
         <!-- ko foreach: tourists -->
@@ -31,7 +34,10 @@
             <td><p><b data-bind="text: id"></b></p></td>
             <td><p><b data-bind="text: name"></b></p></td>
             <td><p><b data-bind="text: surname"></b></p></td>
+            <td><p><b data-bind="text: sex"></b></p></td>
+            <td><p><b data-bind="text: country"></b></p></td>
             <td><p><b data-bind="text: notes"></b></p></td>
+            <td><p><b data-bind="text: dateOfBirth"></b></p></td>
             <td>
                 <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
                 <button data-bind="click: $parent.remove" class="btn">Delete</button>
@@ -131,7 +137,7 @@
             $('#add').modal('show');
         }
         self.beginEdit = function (tourist) {
-            alert("Edit: " + tourist.name());
+            alert("Edit: " + tourist.name);
         }
         self.remove = function (tourist) {
             self.ajax(self.touristsURI+tourist.id(),'DELETE').done(function () {
@@ -147,6 +153,7 @@
         }
 
         self.ajax(self.touristsURI, 'GET').done(function (data) {
+            //console.log(data);
             for (var i = 0; i < data.length; i++) {
                 self.tourists.push({
                     id: ko.observable(data[i].id),
@@ -155,7 +162,9 @@
                     sex: ko.observable(data[i].sex),
                     country: ko.observable(data[i].country),
                     notes: ko.observable(data[i].notes),
-                    dateOfBirth: ko.observable(data[i].dateOfBirth)
+                    dateOfBirth: ko.observable(data[i].dateOfBirth[0]+
+                        "-"+data[i].dateOfBirth[1]+
+                        "-"+data[i].dateOfBirth[2])
 
                 });
             }
