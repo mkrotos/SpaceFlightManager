@@ -22,6 +22,7 @@
             <td style="width: 1px;"><b>Id</b></td>
             <td><b>Name</b></td>
             <td><b>Surname</b></td>
+            <td><b>Notes</b></td>
             <td><b>Options</b></td>
         </tr>
         <!-- ko foreach: tourists -->
@@ -30,6 +31,7 @@
             <td><p><b data-bind="text: id"></b></p></td>
             <td><p><b data-bind="text: name"></b></p></td>
             <td><p><b data-bind="text: surname"></b></p></td>
+            <td><p><b data-bind="text: notes"></b></p></td>
             <td>
                 <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
                 <button data-bind="click: $parent.remove" class="btn">Delete</button>
@@ -37,7 +39,7 @@
         </tr>
         <!-- /ko -->
     </table>
-    <button data-bind="click: beginAdd" class="btn">Add Task</button>
+    <button data-bind="click: beginAdd" class="btn">Add Tourist</button>
 </div>
 
 <!-- Add tourist form-->
@@ -51,7 +53,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputTask">Name</label>
                 <div class="controls">
-                    <input data-bind="value: name" type="text" id="inputTask" placeholder="Task title"
+                    <input data-bind="value: name" type="text" id="inputTask" placeholder="Name"
                            style="width: 150px;">
                 </div>
             </div>
@@ -59,36 +61,36 @@
             <div class="control-group">
                 <label class="control-label" for="inputDescription">Surname</label>
                 <div class="controls">
-                    <input data-bind="value: surname" type="text" id="inputDescription" placeholder="Description"
+                    <input data-bind="value: surname" type="text" id="inputDescription" placeholder="Surname"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDescription">Sex</label>
                 <div class="controls">
-                    <input data-bind="value: sex" type="text" id="inputSex" placeholder="Description"
+                    <input data-bind="value: sex" type="text" id="inputSex" placeholder="ex man"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDescription">Country</label>
                 <div class="controls">
-                    <input data-bind="value: country" type="text" id="inputCountry" placeholder="Description"
+                    <input data-bind="value: country" type="text" id="inputCountry" placeholder="ex Poland"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputDescription">Notes</label>
                 <div class="controls">
-                    <input data-bind="value: notes" type="text" id="inputNotes" placeholder="Description"
+                    <input data-bind="value: notes" type="text" id="inputNotes" placeholder="ex preferences"
                            style="width: 300px;">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputDescription">DateOfBirth</label>
+                <label class="control-label" for="inputDescription">Date of birth</label>
                 <div class="controls">
                     <input data-bind="value: dateOfBirth" type="text" id="inputDateOfBirth"
-                           placeholder="Description"
+                           placeholder="ex 1987-09-01"
                            style="width: 300px;">
                 </div>
             </div>
@@ -166,7 +168,7 @@
                     sex: ko.observable(data.sex),
                     country: ko.observable(data.country),
                     notes: ko.observable(data.notes),
-                    dateOfBirth: ko.observable(data.dateOfBirth)
+                    dateOfBirth: new Date( ko.observable(data.dateOfBirth))
                 });
             });
         }

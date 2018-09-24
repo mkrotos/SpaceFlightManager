@@ -1,6 +1,7 @@
 package com.krotos.space_flight_manager.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Tourist {
     private String sex;
     private String country;
     private String notes;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -76,11 +77,11 @@ public class Tourist {
         this.notes = notes;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
