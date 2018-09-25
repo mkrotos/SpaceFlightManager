@@ -145,12 +145,6 @@
             })
 
         }
-        self.markInProgress = function (flight) {
-            flight.done(false);
-        }
-        self.markDone = function (flight) {
-            flight.done(true);
-        }
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
             console.log(data);
