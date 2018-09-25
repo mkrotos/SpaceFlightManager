@@ -224,8 +224,13 @@
                 flightId: flight.id()
             };
             console.log(reservation);
-            self.ajax(self.reserveURI, 'POST', reservation).done(function () {
-                editTouristViewModel.thisTouristFlights.push(flight);
+            self.ajax(self.reserveURI, 'POST', reservation).done(function (data) {
+                console.log(data);
+                if(data) {
+                    editTouristViewModel.thisTouristFlights.push(flight);
+                }else {
+                    alert("No vacancies");
+                }
             })
         }
         self.remove = function (tourist) {
