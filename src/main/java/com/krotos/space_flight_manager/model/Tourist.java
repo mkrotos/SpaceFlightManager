@@ -1,8 +1,10 @@
 package com.krotos.space_flight_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,6 +23,7 @@ public class Tourist {
     private String notes;
     private LocalDate dateOfBirth;
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "tourist_flight",
@@ -103,7 +106,7 @@ public class Tourist {
                 ", country='" + country + '\'' +
                 ", notes='" + notes + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", flightList=" + flightList +
+                ", flightList=" + Arrays.toString( flightList.toArray()) +
                 '}';
     }
 }

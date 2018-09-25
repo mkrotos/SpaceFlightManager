@@ -1,5 +1,7 @@
 package com.krotos.space_flight_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Flight {
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
     private int numberOfSeats;
+    @JsonIgnore
     @ManyToMany(mappedBy = "flightList")
     private List<Tourist> touristList;
     private double ticketPrice;

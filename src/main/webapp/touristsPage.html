@@ -217,7 +217,12 @@
             $('#edit').modal('show');
         }
         self.reserveFlight = function (tourist, flight) {
-            self.ajax(self.reserveURI + tourist.id() + "/" + flight.id(), 'POST').done(function () {
+            var reservation={
+                touristId:tourist.id(),
+                flightId:flight.id()
+            }
+            console.log(reservation);
+            self.ajax(self.reserveURI, 'POST',reservation).done(function () {
                 self.tourists.flightList.add(flight);
             })
         }

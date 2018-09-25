@@ -20,7 +20,9 @@ public class TouristController {
     @GetMapping("tourists/")
     public List<Tourist> getAllTourists(){
         System.out.println("++++++ Get ");
-        return touristService.findAll();
+        List<Tourist> all = touristService.findAll();
+        System.out.println(all);
+        return all;
     }
 
     @PostMapping("tourists/")
