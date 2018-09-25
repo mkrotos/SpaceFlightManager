@@ -141,7 +141,7 @@
                 <td><p><b data-bind="text: numberOfSeats"></b></p></td>
                 <td><p><b data-bind="text: ticketPrice"></b></p></td>
                 <td>
-                    <button data-bind="click: $parent.delete" class="btn">Delete</button>
+                    <button data-bind="click: $parent.cancelReservation" class="btn">Cancel</button>
                 </td>
             </tr>
             <!-- /ko -->
@@ -208,16 +208,17 @@
                 }
             };
             return $.ajax(request);
-        }
+        };
 
         self.beginAdd = function () {
             $('#add').modal('show');
-        }
+        };
         self.beginEdit = function (tourist) {
             //console.log(tourist.flightList);
             editTouristViewModel.setTourist(tourist);
             $('#edit').modal('show');
-        }
+        };
+
         self.reserveFlight = function (tourist, flight) {
             var reservation = {
                 touristId: tourist.id(),
@@ -228,17 +229,38 @@
                 console.log(data);
                 if(data) {
                     editTouristViewModel.thisTouristFlights.push(flight);
+                    console.log(flight.id())
                 }else {
                     alert("No vacancies");
                 }
             })
-        }
+        };
+
+        self.cancelReservation=function(tourist, flight){
+            //console.log(tourist.id());
+            var reservation = {
+                touristId: tourist.id(),
+                flightId: flight.id
+            };
+            if(typeof reservation.flightId==="function"){
+                reservation.flightId=flight.id();
+            }
+            //console.log(reservation);
+            self.ajax(self.reserveURI, 'DELETE', reservation).done(function (data) {
+                if(data) {
+                    editTouristViewModel.thisTouristFlights.remove(flight);
+                }else {
+                    alert("Error, try again");
+                }
+            })
+        };
+
         self.remove = function (tourist) {
             self.ajax(self.touristsURI + tourist.id(), 'DELETE').done(function () {
                 self.tourists.remove(tourist);
             })
 
-        }
+        };
 
         self.ajax(self.touristsURI, 'GET').done(function (data) {
             console.log(data);
@@ -253,7 +275,6 @@
                     dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
                         "-" + data[i].dateOfBirth[1] +
                         "-" + data[i].dateOfBirth[2])
-                    //flightList: touristsViewModel.getFlightList(data[i].id)
 
                 });
             }
@@ -351,16 +372,16 @@
             self.thisTouristFlights([]);
             touristsViewModel.getFlightList(tourist.id());
             self.allFlights(touristsViewModel.flights());
-            console.log(self.thisTouristFlights);
-            console.log(self.allFlights);
+            //console.log(self.thisTouristFlights);
+            //console.log(self.allFlights);
         };
 
         self.reserveFlight = function (flight) {
             touristsViewModel.reserveFlight(self.tourist, flight);
 
         };
-        self.delete = function (flight) {
-            console.log("delete " + flight);
+        self.cancelReservation = function (flight) {
+            touristsViewModel.cancelReservation(self.tourist,flight);
         }
     }
 

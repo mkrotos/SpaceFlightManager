@@ -5,5 +5,5 @@ public interface ReservationService {
 
     boolean addFlightToTourist(long touristId, long flightId);
 
-    void deleteFlightFromTourist(long touristId, long flightId);
+    boolean deleteFlightFromTourist(long touristId, long flightId);
 }

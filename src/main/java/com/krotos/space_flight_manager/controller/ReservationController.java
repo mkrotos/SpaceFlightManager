@@ -13,13 +13,12 @@ public class ReservationController {
 
     @PostMapping("/reservation")
     public boolean addReservation(@RequestBody Reservation reservation) {
-        boolean success = reservationService.addFlightToTourist(reservation.getTouristId(), reservation.getFlightId());
-        return success;
+        return reservationService.addFlightToTourist(reservation.getTouristId(), reservation.getFlightId());
     }
 
     @DeleteMapping("/reservation")
-    public void deleteReservation(@PathVariable("touristId") long touristId, @PathVariable("flightId") long flightId){
-        reservationService.deleteFlightFromTourist(touristId,flightId);
+    public boolean deleteReservation(@RequestBody Reservation reservation){
+        return reservationService.deleteFlightFromTourist(reservation.getTouristId(),reservation.getFlightId());
     }
 
 }

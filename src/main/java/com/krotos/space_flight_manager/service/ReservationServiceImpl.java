@@ -36,8 +36,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void deleteFlightFromTourist(long touristId, long flightId) {
-
-        touristRepository.findById(touristId).get().getFlightList().remove(flightRepository.findById(flightId).get());
+    @Transactional
+    public boolean deleteFlightFromTourist(long touristId, long flightId) {
+        System.out.println(flightId);
+        Optional<Flight> thisFlight = flightRepository.findById(flightId);
+        Optional<Tourist> thisTourist = touristRepository.findById(touristId);
+        System.out.println(thisFlight);
+        System.out.println(thisTourist);
+        if(!thisFlight.isPresent()||!thisTourist.isPresent()){
+            return false;
+        }
+        boolean success= thisTourist.get().getFlightList().remove(thisFlight.get());
+        return success;
     }
 }
