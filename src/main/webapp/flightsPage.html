@@ -151,7 +151,7 @@
             console.log(data._embedded.flights);
             for (var i = 0; i < data._embedded.flights.length; i++) {
                 self.flights.push({
-                    id: ko.observable(data._embedded.flights[i].id),
+                    id: ko.observable(data._embedded.flights[i]._links.self.href.split("/").pop()),
                     departureDate: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[0]),
                     departureTime: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[1]),
                     arrivalDate: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[0]),

@@ -111,69 +111,70 @@
 </div>
 
 <!-- Edit tourist form-->
-<div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true" style="width: auto">
+<div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true"
+     style="width: auto">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="editDialogLabel">Edit tourist</h3>
     </div>
     <div class="modal-body">
         <h5>Actually reserved</h5>
-            <!-- This tourist reserved flights table-->
-                <table class="table table-striped">
-                    <tr>
-                        <td style="width: 1px;"><b>Id</b></td>
-                        <td><b>Departure date</b></td>
-                        <td><b>Departure time</b></td>
-                        <td><b>Arrival date</b></td>
-                        <td><b>Arrival time</b></td>
-                        <td><b>Number of seats</b></td>
-                        <td><b>Ticket price</b></td>
-                        <td><b>Options</b></td>
-                    </tr>
-                    <!-- ko foreach: thisTouristFlights -->
-                    <tr>
-                        <td><p><b data-bind="text: id"></b></p></td>
-                        <td><p><b data-bind="text: departureDate"></b></p></td>
-                        <td><p><b data-bind="text: departureTime"></b></p></td>
-                        <td><p><b data-bind="text: arrivalDate"></b></p></td>
-                        <td><p><b data-bind="text: arrivalTime"></b></p></td>
-                        <td><p><b data-bind="text: numberOfSeats"></b></p></td>
-                        <td><p><b data-bind="text: ticketPrice"></b></p></td>
-                        <td>
-                            <button data-bind="click: $parent.delete" class="btn">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- /ko -->
-                </table>
+        <!-- This tourist reserved flights table-->
+        <table class="table table-striped">
+            <tr>
+                <td style="width: 1px;"><b>Id</b></td>
+                <td><b>Departure date</b></td>
+                <td><b>Departure time</b></td>
+                <td><b>Arrival date</b></td>
+                <td><b>Arrival time</b></td>
+                <td><b>Number of seats</b></td>
+                <td><b>Ticket price</b></td>
+                <td><b>Options</b></td>
+            </tr>
+            <!-- ko foreach: thisTouristFlights -->
+            <tr>
+                <td><p><b data-bind="text: id"></b></p></td>
+                <td><p><b data-bind="text: departureDate"></b></p></td>
+                <td><p><b data-bind="text: departureTime"></b></p></td>
+                <td><p><b data-bind="text: arrivalDate"></b></p></td>
+                <td><p><b data-bind="text: arrivalTime"></b></p></td>
+                <td><p><b data-bind="text: numberOfSeats"></b></p></td>
+                <td><p><b data-bind="text: ticketPrice"></b></p></td>
+                <td>
+                    <button data-bind="click: $parent.delete" class="btn">Delete</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
 
         <h5>Available flights</h5>
-            <!-- All flights table-->
-                <table class="table table-striped">
-                    <tr>
-                        <td style="width: 1px;"><b>Id</b></td>
-                        <td><b>Departure date</b></td>
-                        <td><b>Departure time</b></td>
-                        <td><b>Arrival date</b></td>
-                        <td><b>Arrival time</b></td>
-                        <td><b>Number of seats</b></td>
-                        <td><b>Ticket price</b></td>
-                        <td><b>Options</b></td>
-                    </tr>
-                    <!-- ko foreach: allFlights -->
-                    <tr>
-                        <td><p><b data-bind="text: id"></b></p></td>
-                        <td><p><b data-bind="text: departureDate"></b></p></td>
-                        <td><p><b data-bind="text: departureTime"></b></p></td>
-                        <td><p><b data-bind="text: arrivalDate"></b></p></td>
-                        <td><p><b data-bind="text: arrivalTime"></b></p></td>
-                        <td><p><b data-bind="text: numberOfSeats"></b></p></td>
-                        <td><p><b data-bind="text: ticketPrice"></b></p></td>
-                        <td>
-                            <button data-bind="click: $parent.reserveFlight" class="btn">Reserve</button>
-                        </td>
-                    </tr>
-                    <!-- /ko -->
-                </table>
+        <!-- All flights table-->
+        <table class="table table-striped">
+            <tr>
+                <td style="width: 1px;"><b>Id</b></td>
+                <td><b>Departure date</b></td>
+                <td><b>Departure time</b></td>
+                <td><b>Arrival date</b></td>
+                <td><b>Arrival time</b></td>
+                <td><b>Number of seats</b></td>
+                <td><b>Ticket price</b></td>
+                <td><b>Options</b></td>
+            </tr>
+            <!-- ko foreach: allFlights -->
+            <tr>
+                <td><p><b data-bind="text: id"></b></p></td>
+                <td><p><b data-bind="text: departureDate"></b></p></td>
+                <td><p><b data-bind="text: departureTime"></b></p></td>
+                <td><p><b data-bind="text: arrivalDate"></b></p></td>
+                <td><p><b data-bind="text: arrivalTime"></b></p></td>
+                <td><p><b data-bind="text: numberOfSeats"></b></p></td>
+                <td><p><b data-bind="text: ticketPrice"></b></p></td>
+                <td>
+                    <button data-bind="click: $parent.reserveFlight" class="btn">Reserve</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Back to tourists page</button>
@@ -184,11 +185,11 @@
     function TouristsViewModel() {
         var self = this;
         self.touristsURI = 'http://localhost:8080/tourists/';
-        self.flightsURI= 'http://localhost:8080/flights';
-        self.reserveURI='http://localhost:8080/reservation/';
+        self.flightsURI = 'http://localhost:8080/flights';
+        self.reserveURI = 'http://localhost:8080/reservation/';
 
         self.tourists = ko.observableArray();
-        self.flights=ko.observableArray();
+        self.flights = ko.observableArray();
 
         self.ajax = function (uri, method, data) {
             var request = {
@@ -211,14 +212,17 @@
             $('#add').modal('show');
         }
         self.beginEdit = function (tourist) {
+            console.log(tourist.flightList);
             editTouristViewModel.setTourist(tourist);
             $('#edit').modal('show');
         }
-        self.reserveFlight=function(tourist,flight){
-
+        self.reserveFlight = function (tourist, flight) {
+            self.ajax(self.reserveURI + tourist.id() + "/" + flight.id(), 'POST').done(function () {
+                self.tourists.flightList.add(flight);
+            })
         }
         self.remove = function (tourist) {
-            self.ajax(self.touristsURI+tourist.id(),'DELETE').done(function () {
+            self.ajax(self.touristsURI + tourist.id(), 'DELETE').done(function () {
                 self.tourists.remove(tourist);
             })
 
@@ -234,9 +238,9 @@
                     sex: ko.observable(data[i].sex),
                     country: ko.observable(data[i].country),
                     notes: ko.observable(data[i].notes),
-                    dateOfBirth: ko.observable(data[i].dateOfBirth[0]+
-                        "-"+data[i].dateOfBirth[1]+
-                        "-"+data[i].dateOfBirth[2]),
+                    dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
+                        "-" + data[i].dateOfBirth[1] +
+                        "-" + data[i].dateOfBirth[2]),
                     flightList: ko.observableArray(data[i].flightList)
 
                 });
@@ -248,7 +252,7 @@
             console.log(data._embedded.flights);
             for (var i = 0; i < data._embedded.flights.length; i++) {
                 self.flights.push({
-                    id: ko.observable(data._embedded.flights[i].id),
+                    id: ko.observable(data._embedded.flights[i]._links.self.href.split("/").pop()),
                     departureDate: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[0]),
                     departureTime: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[1]),
                     arrivalDate: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[0]),
@@ -264,13 +268,13 @@
             self.ajax(self.touristsURI, 'POST', tourist).done(function (data) {
                 console.log(data);
                 self.tourists.push({
-                    id:ko.observable(data.id),
+                    id: ko.observable(data.id),
                     name: ko.observable(data.name),
                     surname: ko.observable(data.surname),
                     sex: ko.observable(data.sex),
                     country: ko.observable(data.country),
                     notes: ko.observable(data.notes),
-                    dateOfBirth: new Date( ko.observable(data.dateOfBirth))
+                    dateOfBirth: new Date(ko.observable(data.dateOfBirth))
                 });
             });
         }
@@ -306,32 +310,31 @@
     }
 
     function EditTouristViewModel() {
-        var self=this;
-        self.thisTouristFlights=ko.observableArray();
-        self.allFlights=ko.observableArray();
+        var self = this;
+        self.thisTouristFlights = ko.observableArray();
+        self.allFlights = ko.observableArray();
 
-        self.setTourist=function(tourist){
-            self.tourist=tourist;
+        self.setTourist = function (tourist) {
+            self.tourist = tourist;
             self.thisTouristFlights(tourist.flightList());
             self.allFlights(touristsViewModel.flights());
         };
 
-        self.reserveFlight=function (flight) {
-            self.tourist=tourist;
-            touristsViewModel.reserveFlight(self.tourist,flight);
+        self.reserveFlight = function (flight) {
+            touristsViewModel.reserveFlight(self.tourist, flight);
 
         };
-        self.delete=function (flight) {
-            console.log("delete "+flight);
+        self.delete = function (flight) {
+            console.log("delete " + flight);
         }
     }
 
     var touristsViewModel = new TouristsViewModel();
     var addTouristViewModel = new AddTouristViewModel();
-    var editTouristViewModel= new EditTouristViewModel();
+    var editTouristViewModel = new EditTouristViewModel();
     ko.applyBindings(touristsViewModel, $('#main')[0]);
     ko.applyBindings(addTouristViewModel, $('#add')[0]);
-    ko.applyBindings(editTouristViewModel,$('#edit')[0]);
+    ko.applyBindings(editTouristViewModel, $('#edit')[0]);
 </script>
 
 </body>
