@@ -190,6 +190,8 @@
 
         self.tourists = ko.observableArray();
         self.flights = ko.observableArray();
+        //self.tempListOfFlights = ko.observableArray();
+
 
         self.ajax = function (uri, method, data) {
             var request = {
@@ -212,18 +214,18 @@
             $('#add').modal('show');
         }
         self.beginEdit = function (tourist) {
-            console.log(tourist.flightList);
+            //console.log(tourist.flightList);
             editTouristViewModel.setTourist(tourist);
             $('#edit').modal('show');
         }
         self.reserveFlight = function (tourist, flight) {
-            var reservation={
-                touristId:tourist.id(),
-                flightId:flight.id()
-            }
+            var reservation = {
+                touristId: tourist.id(),
+                flightId: flight.id()
+            };
             console.log(reservation);
-            self.ajax(self.reserveURI, 'POST',reservation).done(function () {
-                self.tourists.flightList.add(flight);
+            self.ajax(self.reserveURI, 'POST', reservation).done(function () {
+                editTouristViewModel.thisTouristFlights.push(flight);
             })
         }
         self.remove = function (tourist) {
@@ -245,12 +247,32 @@
                     notes: ko.observable(data[i].notes),
                     dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
                         "-" + data[i].dateOfBirth[1] +
-                        "-" + data[i].dateOfBirth[2]),
-                    flightList: ko.observableArray(data[i].flightList)
+                        "-" + data[i].dateOfBirth[2])
+                    //flightList: touristsViewModel.getFlightList(data[i].id)
 
                 });
             }
         });
+        self.getFlightList = function (touristId) {
+            self.ajax(self.touristsURI + touristId + "/flightList", 'GET').done(function (data) {
+                for (var i = 0; i < data._embedded.flights.length; i++) {
+                    editTouristViewModel.thisTouristFlights.push({
+                        id: data._embedded.flights[i]._links.self.href.split("/").pop(),
+                        departureDate: data._embedded.flights[i].departureDateTime.split("T")[0],
+                        departureTime: data._embedded.flights[i].departureDateTime.split("T")[1],
+                        arrivalDate: data._embedded.flights[i].arrivalDateTime.split("T")[0],
+                        arrivalTime: data._embedded.flights[i].arrivalDateTime.split("T")[1],
+                        numberOfSeats: data._embedded.flights[i].numberOfSeats,
+                        ticketPrice: data._embedded.flights[i].ticketPrice
+
+                    });
+                }
+                console.log(self.tempListOfFlights);
+                return self.tempListOfFlights;
+            });
+            //console.log(flights);
+            //return flights
+        };
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
             console.log(data);
@@ -321,8 +343,11 @@
 
         self.setTourist = function (tourist) {
             self.tourist = tourist;
-            self.thisTouristFlights(tourist.flightList());
+            self.thisTouristFlights([]);
+            touristsViewModel.getFlightList(tourist.id());
             self.allFlights(touristsViewModel.flights());
+            console.log(self.thisTouristFlights);
+            console.log(self.allFlights);
         };
 
         self.reserveFlight = function (flight) {
