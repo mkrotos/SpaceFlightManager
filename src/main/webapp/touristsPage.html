@@ -227,29 +227,30 @@
             console.log(reservation);
             self.ajax(self.reserveURI, 'POST', reservation).done(function (data) {
                 console.log(data);
-                if(data) {
+                if (data) {
                     editTouristViewModel.thisTouristFlights.push(flight);
                     console.log(flight.id())
-                }else {
+                } else {
                     alert("No vacancies");
                 }
             })
         };
 
-        self.cancelReservation=function(tourist, flight){
+        self.cancelReservation = function (tourist, flight) {
             //console.log(tourist.id());
             var reservation = {
                 touristId: tourist.id(),
                 flightId: flight.id
             };
-            if(typeof reservation.flightId==="function"){
-                reservation.flightId=flight.id();
+            if (typeof reservation.flightId === "function") {
+                reservation.flightId = flight.id();
             }
             //console.log(reservation);
             self.ajax(self.reserveURI, 'DELETE', reservation).done(function (data) {
-                if(data) {
-                    editTouristViewModel.thisTouristFlights.remove(flight);
-                }else {
+                if (data) {
+                    var indexOfThisFlight = editTouristViewModel.thisTouristFlights.indexOf(flight);
+                    editTouristViewModel.thisTouristFlights.splice(indexOfThisFlight, 1);
+                } else {
                     alert("Error, try again");
                 }
             })
@@ -265,6 +266,9 @@
         self.ajax(self.touristsURI, 'GET').done(function (data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) {
+                if(data[i].dateOfBirth===null){
+                    data[i].dateOfBirth=["","",""]
+                }
                 self.tourists.push({
                     id: ko.observable(data[i].id),
                     name: ko.observable(data[i].name),
@@ -272,11 +276,14 @@
                     sex: ko.observable(data[i].sex),
                     country: ko.observable(data[i].country),
                     notes: ko.observable(data[i].notes),
+
                     dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
                         "-" + data[i].dateOfBirth[1] +
                         "-" + data[i].dateOfBirth[2])
 
-                });
+
+                })
+                ;
             }
         });
         self.getFlightList = function (touristId) {
@@ -381,7 +388,8 @@
 
         };
         self.cancelReservation = function (flight) {
-            touristsViewModel.cancelReservation(self.tourist,flight);
+            //self.setTourist(self.tourist);
+            touristsViewModel.cancelReservation(self.tourist, flight);
         }
     }
 

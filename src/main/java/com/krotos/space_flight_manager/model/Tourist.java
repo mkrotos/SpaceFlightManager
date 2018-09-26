@@ -107,7 +107,6 @@ public class Tourist {
                 ", country='" + country + '\'' +
                 ", notes='" + notes + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", flightList=" + Arrays.toString( flightList.toArray()) +
                 '}';
     }
 }
