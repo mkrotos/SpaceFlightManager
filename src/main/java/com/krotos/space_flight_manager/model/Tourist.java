@@ -1,13 +1,9 @@
 package com.krotos.space_flight_manager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-
 
 @Entity
 public class Tourist {
@@ -32,6 +28,7 @@ public class Tourist {
             inverseJoinColumns = {@JoinColumn(name = "flight_id")}
     )
     private List<Flight> flightList;
+
 
     public Long getId() {
         return id;
@@ -95,18 +92,5 @@ public class Tourist {
 
     public void setFlightList(List<Flight> flightList) {
         this.flightList = flightList;
-    }
-
-    @Override
-    public String toString() {
-        return "Tourist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", sex='" + sex + '\'' +
-                ", country='" + country + '\'' +
-                ", notes='" + notes + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                '}';
     }
 }

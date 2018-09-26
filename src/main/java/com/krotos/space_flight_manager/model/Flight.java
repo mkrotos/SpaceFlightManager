@@ -16,10 +16,11 @@ public class Flight {
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
     private int numberOfSeats;
+    private double ticketPrice;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "flightList")
     private List<Tourist> touristList;
-    private double ticketPrice;
 
     public Long getId() {
         return id;
@@ -53,19 +54,19 @@ public class Flight {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public List<Tourist> getTouristList() {
-        return touristList;
-    }
-
-    public void setTouristList(List<Tourist> touristList) {
-        this.touristList = touristList;
-    }
-
     public double getTicketPrice() {
         return ticketPrice;
     }
 
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
+    }
+
+    public List<Tourist> getTouristList() {
+        return touristList;
+    }
+
+    public void setTouristList(List<Tourist> touristList) {
+        this.touristList = touristList;
     }
 }

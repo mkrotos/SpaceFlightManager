@@ -286,11 +286,11 @@
                 ;
             }
             self.tourists.sort(function (a, b) {
-                return a.id()>b.id();
+                return a.id() > b.id();
             });
         });
 
-        self.getTouristList = function (touristId) {
+        self.getFlightList = function (touristId) {
             self.ajax(self.touristsURI + touristId + "/flightList", 'GET').done(function (data) {
 
                 var flights = data._embedded.flights;
@@ -306,9 +306,7 @@
 
                     });
                 }
-                editTouristViewModel.thisTouristFlights.sort(function (a, b) {
-                    return a.id()>b.id();
-                });
+
                 console.log(self.tempListOfFlights);
                 return self.tempListOfFlights;
             });
@@ -330,10 +328,9 @@
                 });
             }
             self.flights.sort(function (a, b) {
-                return a.id()>b.id();
-            });                editTouristViewModel.thisTouristFlights.sort(function (a, b) {
-                return a.id()>b.id();
+                return a.id() > b.id();
             });
+
         });
 
         self.add = function (tourist) {
@@ -361,7 +358,7 @@
             {text: "man"},
             {text: "woman"}
         ]);
-        self.sex=ko.observable();
+        self.sex = ko.observable();
         self.country = ko.observable();
         self.notes = ko.observable();
         self.dateOfBirth = ko.observable();
@@ -396,7 +393,7 @@
             self.tourist = tourist;
             self.touristView(tourist);
             self.thisTouristFlights([]);
-            touristsViewModel.getTouristList(tourist.id());
+            touristsViewModel.getFlightList(tourist.id());
             self.allFlights(touristsViewModel.flights());
             //console.log(self.thisTouristFlights);
             //console.log(self.allFlights);

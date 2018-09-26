@@ -1,7 +1,6 @@
 package com.krotos.space_flight_manager.controller;
 
 import com.krotos.space_flight_manager.model.Tourist;
-import com.krotos.space_flight_manager.service.ReservationService;
 import com.krotos.space_flight_manager.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +13,14 @@ public class TouristController {
     @Autowired
     private TouristService touristService;
 
-    @Autowired
-    private ReservationService reservationService;
-
     @GetMapping("tourists/")
     public List<Tourist> getAllTourists(){
-        System.out.println("++++++ Get ");
-        List<Tourist> all = touristService.findAll();
-        System.out.println(all);
-        return all;
+        return touristService.findAll();
     }
 
     @PostMapping("tourists/")
     public Tourist addTourist(@RequestBody Tourist tourist){
-        System.out.println("+++++++++++++++++ Post "+tourist.toString());
-        Tourist savedTourist= touristService.add(tourist);
-
-        return savedTourist;
+        return touristService.add(tourist);
     }
     @DeleteMapping("tourists/{id}")
     public void deleteTourist(@PathVariable Long id){
