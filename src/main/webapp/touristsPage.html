@@ -116,6 +116,10 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="editDialogLabel">Edit tourist</h3>
+        <!-- ko foreach: touristView -->
+        <b data-bind="text: name"></b>
+        <b data-bind="text: surname"></b>
+        <!-- /ko -->
     </div>
     <div class="modal-body">
         <h5>Actually reserved</h5>
@@ -190,17 +194,13 @@
 
         self.tourists = ko.observableArray();
         self.flights = ko.observableArray();
-        //self.tempListOfFlights = ko.observableArray();
-
 
         self.ajax = function (uri, method, data) {
             var request = {
                 url: uri,
                 type: method,
                 contentType: "application/json",
-                //accepts: "application/json",
                 cache: false,
-                //dataType: 'json',
                 data: JSON.stringify(data),
                 error: function (jqXHR) {
 
@@ -276,16 +276,14 @@
                     sex: ko.observable(data[i].sex),
                     country: ko.observable(data[i].country),
                     notes: ko.observable(data[i].notes),
-
                     dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
                         "-" + data[i].dateOfBirth[1] +
                         "-" + data[i].dateOfBirth[2])
-
-
                 })
                 ;
             }
         });
+
         self.getFlightList = function (touristId) {
             self.ajax(self.touristsURI + touristId + "/flightList", 'GET').done(function (data) {
                 for (var i = 0; i < data._embedded.flights.length; i++) {
@@ -366,16 +364,17 @@
             self.notes("");
             self.dateOfBirth("");
         }
-
     }
 
     function EditTouristViewModel() {
         var self = this;
         self.thisTouristFlights = ko.observableArray();
         self.allFlights = ko.observableArray();
+        self.touristView=ko.observable();
 
         self.setTourist = function (tourist) {
             self.tourist = tourist;
+            self.touristView(tourist);
             self.thisTouristFlights([]);
             touristsViewModel.getFlightList(tourist.id());
             self.allFlights(touristsViewModel.flights());
