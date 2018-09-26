@@ -13,6 +13,8 @@
 <div class="navbar">
     <div class="navbar-inner">
         <a class="brand" href="#">Space Flight Manager - Flights</a>
+        <a class="btn" href="/">Main Page</a>
+        <a class="btn" href="touristsPage.html">Tourists Page</a>
     </div>
 </div>
 
@@ -211,11 +213,11 @@
                 }
             };
             return $.ajax(request);
-        }
+        };
 
         self.beginAdd = function () {
             $('#add').modal('show');
-        }
+        };
         self.beginEdit = function (flight) {
             editFlightViewModel.setFlight(flight);
             $('#edit').modal('show');
