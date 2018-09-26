@@ -110,21 +110,99 @@
     </div>
 </div>
 
+<!-- Edit tourist form-->
+<div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true"
+     style="width: auto">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="editDialogLabel">Edit flight</h3>
+        <!-- ko foreach: flightView -->
+        <b>Departure: </b>
+        <b data-bind="text: departureDate"></b>
+        <b data-bind="text: departureTime"></b>
+        <!-- /ko -->
+    </div>
+    <div class="modal-body">
+        <h5>Actual reservations</h5>
+        <!-- This flight reservations-->
+        <table class="table table-striped">
+            <tr>
+                <td style="width: 1px;"><b>Id</b></td>
+                <td><b>Name</b></td>
+                <td><b>Surname</b></td>
+                <td><b>Sex</b></td>
+                <td><b>Country</b></td>
+                <td><b>Notes</b></td>
+                <td><b>Date of birth</b></td>
+                <td><b>Options</b></td>
+            </tr>
+            <!-- ko foreach: thisFlightTourists -->
+            <tr>
+                <td><p><b data-bind="text: id"></b></p></td>
+                <td><p><b data-bind="text: name"></b></p></td>
+                <td><p><b data-bind="text: surname"></b></p></td>
+                <td><p><b data-bind="text: sex"></b></p></td>
+                <td><p><b data-bind="text: country"></b></p></td>
+                <td><p><b data-bind="text: notes"></b></p></td>
+                <td><p><b data-bind="text: dateOfBirth"></b></p></td>
+                <td>
+                    <button data-bind="click: $parent.cancelReservation" class="btn">Cancel</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
+
+        <h5>All tourists</h5>
+        <!-- All flights table-->
+        <table class="table table-striped">
+            <tr>
+                <td style="width: 1px;"><b>Id</b></td>
+                <td><b>Name</b></td>
+                <td><b>Surname</b></td>
+                <td><b>Sex</b></td>
+                <td><b>Country</b></td>
+                <td><b>Notes</b></td>
+                <td><b>Date of birth</b></td>
+                <td><b>Options</b></td>
+            </tr>
+            <!-- ko foreach: allTourists -->
+            <tr>
+                <td><p><b data-bind="text: id"></b></p></td>
+                <td><p><b data-bind="text: name"></b></p></td>
+                <td><p><b data-bind="text: surname"></b></p></td>
+                <td><p><b data-bind="text: sex"></b></p></td>
+                <td><p><b data-bind="text: country"></b></p></td>
+                <td><p><b data-bind="text: notes"></b></p></td>
+                <td><p><b data-bind="text: dateOfBirth"></b></p></td>
+                <td>
+                    <button data-bind="click: $parent.addTouristToFlight" class="btn">Reserve</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Back to flights page</button>
+    </div>
+</div>
+
 <script type="text/javascript">
     function FlightsViewModel() {
         var self = this;
+        self.touristsURI = 'http://localhost:8080/tourists/';
         self.flightsURI = 'http://localhost:8080/flights';
+        self.reserveURI = 'http://localhost:8080/reservation/';
 
         self.flights = ko.observableArray();
+        self.tourists = ko.observableArray();
+
 
         self.ajax = function (uri, method, data) {
             var request = {
                 url: uri,
                 type: method,
                 contentType: "application/json",
-                //accepts: "application/json",
                 cache: false,
-                //dataType: 'json',
                 data: JSON.stringify(data),
                 error: function (jqXHR) {
                     console.log("ajax error " + jqXHR.status);
@@ -137,10 +215,73 @@
             $('#add').modal('show');
         }
         self.beginEdit = function (flight) {
-            alert("Edit: " + flight.name);
-        }
+            editFlightViewModel.setFlight(flight);
+            $('#edit').modal('show');
+        };
+        self.reserveFlight = function (tourist, flight) {
+            var reservation = {
+                touristId: tourist.id(),
+                flightId: flight.id()
+            };
+            console.log(reservation);
+            self.ajax(self.reserveURI, 'POST', reservation).done(function (data) {
+                console.log(data);
+                if (data) {
+                    editFlightViewModel.thisFlightTourists.push(tourist);
+                    console.log(tourist.id())
+                } else {
+                    alert("No vacancies");
+                }
+            })
+        };
+
+        self.cancelReservation = function (tourist, flight) {
+            //console.log(tourist.id());
+            var reservation = {
+                touristId: tourist.id(),
+                flightId: flight.id
+            };
+            if (typeof reservation.flightId === "function") {
+                reservation.flightId = flight.id();
+            }
+            //console.log(reservation);
+            self.ajax(self.reserveURI, 'DELETE', reservation).done(function (data) {
+                if (data) {
+                    var indexOfThisTourist = editFlightViewModel.thisFlightTourists.indexOf(tourist);
+                    editFlightViewModel.thisFlightTourists.splice(indexOfThisTourist, 1);
+                } else {
+                    alert("Error, try again");
+                }
+            })
+        };
+
+        self.getTouristList = function (flightId) {
+            var thisFlightTouristsListUri = self.flightsURI+"/" + flightId + "/touristList";
+            self.ajax(thisFlightTouristsListUri, 'GET').done(function (data) {
+                console.log(flightId);
+                console.log(thisFlightTouristsListUri);
+                console.log(data._embedded.tourists);
+                for (var i = 0; i < data._embedded.tourists.length; i++) {
+                    if(data._embedded.tourists[i].dateOfBirth===null){
+                        data._embedded.tourists[i].dateOfBirth="";
+                    }
+                    editFlightViewModel.thisFlightTourists.push({
+                        id: ko.observable(data._embedded.tourists[i]._links.self.href.split("/").pop()),
+                        name: ko.observable(data._embedded.tourists[i].name),
+                        surname: ko.observable(data._embedded.tourists[i].surname),
+                        sex: ko.observable(data._embedded.tourists[i].sex),
+                        country: ko.observable(data._embedded.tourists[i].country),
+                        notes: ko.observable(data._embedded.tourists[i].notes),
+                        dateOfBirth: ko.observable(data._embedded.tourists[i].dateOfBirth)
+                    })
+                    ;
+                }
+                return self.tempListOfFlights;
+            });
+        };
         self.remove = function (flight) {
-            self.ajax(self.flightsURI + flight.id(), 'DELETE').done(function () {
+            console.log(flight.id());
+            self.ajax(self.flightsURI +"/"+ flight.id(), 'DELETE').done(function () {
                 self.flights.remove(flight);
             })
 
@@ -162,6 +303,26 @@
                 });
             }
         });
+        self.ajax(self.touristsURI, 'GET').done(function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                if(data[i].dateOfBirth===null){
+                    data[i].dateOfBirth=["","",""]
+                }
+                self.tourists.push({
+                    id: ko.observable(data[i].id),
+                    name: ko.observable(data[i].name),
+                    surname: ko.observable(data[i].surname),
+                    sex: ko.observable(data[i].sex),
+                    country: ko.observable(data[i].country),
+                    notes: ko.observable(data[i].notes),
+                    dateOfBirth: ko.observable(data[i].dateOfBirth[0] +
+                        "-" + data[i].dateOfBirth[1] +
+                        "-" + data[i].dateOfBirth[2])
+                })
+                ;
+            }
+        });
 
         self.add = function (flight) {
             var flightToSend = {
@@ -171,7 +332,7 @@
                 numberOfSeats: flight.numberOfSeats,
                 touristList: null,
                 ticketPrice: flight.ticketPrice
-            }
+            };
             console.log(flightToSend);
             self.ajax(self.flightsURI, 'POST', flightToSend).done(function (data) {
                 console.log(data);
@@ -199,7 +360,7 @@
 
         self.addFlight = function () {
             $('#add').modal('hide');
-            fligthsViewModel.add({
+            flightsViewModel.add({
                 departureDate: self.departureDate(),
                 departureTime: self.departureTime(),
                 arrivalDate: self.arrivalDate(),
@@ -216,11 +377,40 @@
         }
 
     }
+    function EditFlightViewModel() {
+        var self = this;
+        self.thisFlightTourists = ko.observableArray();
+        self.allTourists = ko.observableArray();
+        self.flightView=ko.observable();
 
-    var fligthsViewModel = new FlightsViewModel();
+        self.setFlight = function (flight) {
+            self.flight = flight;
+            self.flightView(flight);
+            self.thisFlightTourists([]);
+            flightsViewModel.getTouristList(flight.id());
+            self.allTourists(flightsViewModel.tourists());
+            //console.log(self.thisTouristFlights);
+            //console.log(self.allFlights);
+        };
+
+        self.addTouristToFlight = function (tourist) {
+            flightsViewModel.reserveFlight(tourist, self.flight);
+
+        };
+        self.cancelReservation = function (tourist) {
+            //self.setTourist(self.tourist);
+            flightsViewModel.cancelReservation(tourist, self.flight);
+        }
+    }
+
+    var flightsViewModel = new FlightsViewModel();
     var addFlightViewModel = new AddFlightViewModel();
-    ko.applyBindings(fligthsViewModel, $('#main')[0]);
+    var editFlightViewModel = new EditFlightViewModel();
+
+    ko.applyBindings(flightsViewModel, $('#main')[0]);
     ko.applyBindings(addFlightViewModel, $('#add')[0]);
+    ko.applyBindings(editFlightViewModel, $('#edit')[0]);
+
 </script>
 
 </body>

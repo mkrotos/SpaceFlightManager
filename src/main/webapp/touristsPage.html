@@ -203,7 +203,6 @@
                 cache: false,
                 data: JSON.stringify(data),
                 error: function (jqXHR) {
-
                     console.log("ajax error " + jqXHR.status);
                 }
             };
@@ -284,7 +283,7 @@
             }
         });
 
-        self.getFlightList = function (touristId) {
+        self.getTouristList = function (touristId) {
             self.ajax(self.touristsURI + touristId + "/flightList", 'GET').done(function (data) {
                 for (var i = 0; i < data._embedded.flights.length; i++) {
                     editTouristViewModel.thisTouristFlights.push({
@@ -376,7 +375,7 @@
             self.tourist = tourist;
             self.touristView(tourist);
             self.thisTouristFlights([]);
-            touristsViewModel.getFlightList(tourist.id());
+            touristsViewModel.getTouristList(tourist.id());
             self.allFlights(touristsViewModel.flights());
             //console.log(self.thisTouristFlights);
             //console.log(self.allFlights);
