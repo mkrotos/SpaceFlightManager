@@ -69,21 +69,21 @@
                 <label class="control-label" for="inputSurname">Surname</label>
                 <div class="controls">
                     <input data-bind="value: surname" type="text" id="inputSurname" placeholder="Surname"
-                           style="width: 300px;">
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputSurname">Sex</label>
                 <div class="controls">
                     <input data-bind="value: sex" type="text" id="inputSex" placeholder="ex man"
-                           style="width: 300px;">
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputSurname">Country</label>
                 <div class="controls">
                     <input data-bind="value: country" type="text" id="inputCountry" placeholder="ex Poland"
-                           style="width: 300px;">
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
@@ -98,7 +98,7 @@
                 <div class="controls">
                     <input data-bind="value: dateOfBirth" type="text" id="inputDateOfBirth"
                            placeholder="ex 1987-09-01"
-                           style="width: 300px;">
+                           style="width: 150px;">
                 </div>
             </div>
 
@@ -128,9 +128,9 @@
             <tr>
                 <td style="width: 1px;"><b>Id</b></td>
                 <td><b>Departure date</b></td>
-                <td><b>Departure time</b></td>
+                <!--<td><b>Departure time</b></td>-->
                 <td><b>Arrival date</b></td>
-                <td><b>Arrival time</b></td>
+                <!--<td><b>Arrival time</b></td>-->
                 <td><b>Number of seats</b></td>
                 <td><b>Ticket price</b></td>
                 <td><b>Options</b></td>
@@ -139,9 +139,9 @@
             <tr>
                 <td><p><b data-bind="text: id"></b></p></td>
                 <td><p><b data-bind="text: departureDate"></b></p></td>
-                <td><p><b data-bind="text: departureTime"></b></p></td>
+                <!--<td><p><b data-bind="text: departureTime"></b></p></td>-->
                 <td><p><b data-bind="text: arrivalDate"></b></p></td>
-                <td><p><b data-bind="text: arrivalTime"></b></p></td>
+                <!--<td><p><b data-bind="text: arrivalTime"></b></p></td>-->
                 <td><p><b data-bind="text: numberOfSeats"></b></p></td>
                 <td><p><b data-bind="text: ticketPrice"></b></p></td>
                 <td>
@@ -157,9 +157,9 @@
             <tr>
                 <td style="width: 1px;"><b>Id</b></td>
                 <td><b>Departure date</b></td>
-                <td><b>Departure time</b></td>
+                <!--<td><b>Departure time</b></td>-->
                 <td><b>Arrival date</b></td>
-                <td><b>Arrival time</b></td>
+                <!--<td><b>Arrival time</b></td>-->
                 <td><b>Number of seats</b></td>
                 <td><b>Ticket price</b></td>
                 <td><b>Options</b></td>
@@ -168,9 +168,9 @@
             <tr>
                 <td><p><b data-bind="text: id"></b></p></td>
                 <td><p><b data-bind="text: departureDate"></b></p></td>
-                <td><p><b data-bind="text: departureTime"></b></p></td>
+                <!--<td><p><b data-bind="text: departureTime"></b></p></td>-->
                 <td><p><b data-bind="text: arrivalDate"></b></p></td>
-                <td><p><b data-bind="text: arrivalTime"></b></p></td>
+                <!--<td><p><b data-bind="text: arrivalTime"></b></p></td>-->
                 <td><p><b data-bind="text: numberOfSeats"></b></p></td>
                 <td><p><b data-bind="text: ticketPrice"></b></p></td>
                 <td>
@@ -259,14 +259,13 @@
             self.ajax(self.touristsURI + tourist.id(), 'DELETE').done(function () {
                 self.tourists.remove(tourist);
             })
-
         };
 
         self.ajax(self.touristsURI, 'GET').done(function (data) {
             console.log(data);
             for (var i = 0; i < data.length; i++) {
-                if(data[i].dateOfBirth===null){
-                    data[i].dateOfBirth=["","",""]
+                if (data[i].dateOfBirth === null) {
+                    data[i].dateOfBirth = ["", "", ""]
                 }
                 self.tourists.push({
                     id: ko.observable(data[i].id),
@@ -285,45 +284,45 @@
 
         self.getTouristList = function (touristId) {
             self.ajax(self.touristsURI + touristId + "/flightList", 'GET').done(function (data) {
-                for (var i = 0; i < data._embedded.flights.length; i++) {
+
+                var flights = data._embedded.flights;
+                for (var i = 0; i < flights.length; i++) {
                     editTouristViewModel.thisTouristFlights.push({
-                        id: data._embedded.flights[i]._links.self.href.split("/").pop(),
-                        departureDate: data._embedded.flights[i].departureDateTime.split("T")[0],
-                        departureTime: data._embedded.flights[i].departureDateTime.split("T")[1],
-                        arrivalDate: data._embedded.flights[i].arrivalDateTime.split("T")[0],
-                        arrivalTime: data._embedded.flights[i].arrivalDateTime.split("T")[1],
-                        numberOfSeats: data._embedded.flights[i].numberOfSeats,
-                        ticketPrice: data._embedded.flights[i].ticketPrice
+                        id: flights[i]._links.self.href.split("/").pop(),
+                        departureDate: flights[i].departureDateTime.split("T")[0],
+                        departureTime: flights[i].departureDateTime.split("T")[1],
+                        arrivalDate: flights[i].arrivalDateTime.split("T")[0],
+                        arrivalTime: flights[i].arrivalDateTime.split("T")[1],
+                        numberOfSeats: flights[i].numberOfSeats,
+                        ticketPrice: flights[i].ticketPrice
 
                     });
                 }
                 console.log(self.tempListOfFlights);
                 return self.tempListOfFlights;
             });
-            //console.log(flights);
-            //return flights
         };
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
-            console.log(data);
-            console.log(data._embedded.flights);
-            for (var i = 0; i < data._embedded.flights.length; i++) {
+            //console.log(data);
+            var flights = data._embedded.flights;
+            //console.log(flights);
+            for (var i = 0; i < flights.length; i++) {
                 self.flights.push({
-                    id: ko.observable(data._embedded.flights[i]._links.self.href.split("/").pop()),
-                    departureDate: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[0]),
-                    departureTime: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[1]),
-                    arrivalDate: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[0]),
-                    arrivalTime: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[1]),
-                    numberOfSeats: ko.observable(data._embedded.flights[i].numberOfSeats),
-                    ticketPrice: ko.observable(data._embedded.flights[i].ticketPrice)
-
+                    id: ko.observable(flights[i]._links.self.href.split("/").pop()),
+                    departureDate: ko.observable(flights[i].departureDateTime.split("T")[0]),
+                    departureTime: ko.observable(flights[i].departureDateTime.split("T")[1]),
+                    arrivalDate: ko.observable(flights[i].arrivalDateTime.split("T")[0]),
+                    arrivalTime: ko.observable(flights[i].arrivalDateTime.split("T")[1]),
+                    numberOfSeats: ko.observable(flights[i].numberOfSeats),
+                    ticketPrice: ko.observable(flights[i].ticketPrice)
                 });
             }
         });
 
         self.add = function (tourist) {
             self.ajax(self.touristsURI, 'POST', tourist).done(function (data) {
-                console.log(data);
+                //console.log(data);
                 self.tourists.push({
                     id: ko.observable(data.id),
                     name: ko.observable(data.name),
@@ -369,7 +368,7 @@
         var self = this;
         self.thisTouristFlights = ko.observableArray();
         self.allFlights = ko.observableArray();
-        self.touristView=ko.observable();
+        self.touristView = ko.observable();
 
         self.setTourist = function (tourist) {
             self.tourist = tourist;
@@ -386,7 +385,6 @@
 
         };
         self.cancelReservation = function (flight) {
-            //self.setTourist(self.tourist);
             touristsViewModel.cancelReservation(self.tourist, flight);
         }
     }

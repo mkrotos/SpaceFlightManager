@@ -49,7 +49,8 @@
 </div>
 
 <!-- Add tourist form-->
-<div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
+<div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true"
+     style="width: auto">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="addDialogLabel">Add Flight</h3>
@@ -59,7 +60,8 @@
             <div class="control-group">
                 <label class="control-label" for="inputDepartureDate">Departure date</label>
                 <div class="controls">
-                    <input data-bind="value: departureDate" type="text" id="inputDepartureDate" placeholder="Name"
+                    <input data-bind="value: departureDate" type="text" id="inputDepartureDate"
+                           placeholder="ex 2020-10-25"
                            style="width: 150px;">
                 </div>
             </div>
@@ -67,38 +69,38 @@
             <div class="control-group">
                 <label class="control-label" for="inputDepartureTime">Departure time</label>
                 <div class="controls">
-                    <input data-bind="value: departureTime" type="text" id="inputDepartureTime" placeholder="Surname"
-                           style="width: 300px;">
+                    <input data-bind="value: departureTime" type="text" id="inputDepartureTime" placeholder="ex 12:30"
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputArrivalDate">Arrival date</label>
                 <div class="controls">
-                    <input data-bind="value: arrivalDate" type="text" id="inputArrivalDate" placeholder="ex man"
-                           style="width: 300px;">
+                    <input data-bind="value: arrivalDate" type="text" id="inputArrivalDate" placeholder="ex 2020-10-25"
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputArrivalTime">Arrival time</label>
                 <div class="controls">
-                    <input data-bind="value: arrivalTime" type="text" id="inputArrivalTime" placeholder="ex Poland"
-                           style="width: 300px;">
+                    <input data-bind="value: arrivalTime" type="text" id="inputArrivalTime" placeholder="ex 12:30"
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNumberOfSeats">Number of seats</label>
                 <div class="controls">
                     <input data-bind="value: numberOfSeats" type="text" id="inputNumberOfSeats"
-                           placeholder="ex preferences"
-                           style="width: 300px;">
+                           placeholder="ex 5"
+                           style="width: 150px;">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputTicketPrice">Ticket price</label>
                 <div class="controls">
                     <input data-bind="value: ticketPrice" type="text" id="inputTicketPrice"
-                           placeholder="ex 1987-09-01"
-                           style="width: 300px;">
+                           placeholder="ex 5000"
+                           style="width: 150px;">
                 </div>
             </div>
 
@@ -130,9 +132,9 @@
                 <td style="width: 1px;"><b>Id</b></td>
                 <td><b>Name</b></td>
                 <td><b>Surname</b></td>
-                <td><b>Sex</b></td>
+                <!--<td><b>Sex</b></td>-->
                 <td><b>Country</b></td>
-                <td><b>Notes</b></td>
+                <!--<td><b>Notes</b></td>-->
                 <td><b>Date of birth</b></td>
                 <td><b>Options</b></td>
             </tr>
@@ -141,9 +143,9 @@
                 <td><p><b data-bind="text: id"></b></p></td>
                 <td><p><b data-bind="text: name"></b></p></td>
                 <td><p><b data-bind="text: surname"></b></p></td>
-                <td><p><b data-bind="text: sex"></b></p></td>
+                <!--<td><p><b data-bind="text: sex"></b></p></td>-->
                 <td><p><b data-bind="text: country"></b></p></td>
-                <td><p><b data-bind="text: notes"></b></p></td>
+                <!--<td><p><b data-bind="text: notes"></b></p></td>-->
                 <td><p><b data-bind="text: dateOfBirth"></b></p></td>
                 <td>
                     <button data-bind="click: $parent.cancelReservation" class="btn">Cancel</button>
@@ -159,9 +161,9 @@
                 <td style="width: 1px;"><b>Id</b></td>
                 <td><b>Name</b></td>
                 <td><b>Surname</b></td>
-                <td><b>Sex</b></td>
+                <!--<td><b>Sex</b></td>-->
                 <td><b>Country</b></td>
-                <td><b>Notes</b></td>
+                <!--<td><b>Notes</b></td>-->
                 <td><b>Date of birth</b></td>
                 <td><b>Options</b></td>
             </tr>
@@ -170,9 +172,9 @@
                 <td><p><b data-bind="text: id"></b></p></td>
                 <td><p><b data-bind="text: name"></b></p></td>
                 <td><p><b data-bind="text: surname"></b></p></td>
-                <td><p><b data-bind="text: sex"></b></p></td>
+                <!--<td><p><b data-bind="text: sex"></b></p></td>-->
                 <td><p><b data-bind="text: country"></b></p></td>
-                <td><p><b data-bind="text: notes"></b></p></td>
+                <!--<td><p><b data-bind="text: notes"></b></p></td>-->
                 <td><p><b data-bind="text: dateOfBirth"></b></p></td>
                 <td>
                     <button data-bind="click: $parent.addTouristToFlight" class="btn">Reserve</button>
@@ -256,23 +258,23 @@
         };
 
         self.getTouristList = function (flightId) {
-            var thisFlightTouristsListUri = self.flightsURI+"/" + flightId + "/touristList";
+            var thisFlightTouristsListUri = self.flightsURI + "/" + flightId + "/touristList";
             self.ajax(thisFlightTouristsListUri, 'GET').done(function (data) {
-                console.log(flightId);
-                console.log(thisFlightTouristsListUri);
-                console.log(data._embedded.tourists);
-                for (var i = 0; i < data._embedded.tourists.length; i++) {
-                    if(data._embedded.tourists[i].dateOfBirth===null){
-                        data._embedded.tourists[i].dateOfBirth="";
+
+                var tourists = data._embedded.tourists;
+
+                for (var i = 0; i < tourists.length; i++) {
+                    if (tourists[i].dateOfBirth === null) {
+                        tourists[i].dateOfBirth = "";
                     }
                     editFlightViewModel.thisFlightTourists.push({
-                        id: ko.observable(data._embedded.tourists[i]._links.self.href.split("/").pop()),
-                        name: ko.observable(data._embedded.tourists[i].name),
-                        surname: ko.observable(data._embedded.tourists[i].surname),
-                        sex: ko.observable(data._embedded.tourists[i].sex),
-                        country: ko.observable(data._embedded.tourists[i].country),
-                        notes: ko.observable(data._embedded.tourists[i].notes),
-                        dateOfBirth: ko.observable(data._embedded.tourists[i].dateOfBirth)
+                        id: ko.observable(tourists[i]._links.self.href.split("/").pop()),
+                        name: ko.observable(tourists[i].name),
+                        surname: ko.observable(tourists[i].surname),
+                        sex: ko.observable(tourists[i].sex),
+                        country: ko.observable(tourists[i].country),
+                        notes: ko.observable(tourists[i].notes),
+                        dateOfBirth: ko.observable(tourists[i].dateOfBirth)
                     })
                     ;
                 }
@@ -280,34 +282,35 @@
             });
         };
         self.remove = function (flight) {
-            console.log(flight.id());
-            self.ajax(self.flightsURI +"/"+ flight.id(), 'DELETE').done(function () {
+            //console.log(flight.id());
+            var thisFlightUri = self.flightsURI + "/" + flight.id();
+            self.ajax(thisFlightUri, 'DELETE').done(function () {
                 self.flights.remove(flight);
             })
 
         }
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
-            console.log(data);
-            console.log(data._embedded.flights);
-            for (var i = 0; i < data._embedded.flights.length; i++) {
+            var flights = data._embedded.flights;
+
+            for (var i = 0; i < flights.length; i++) {
                 self.flights.push({
-                    id: ko.observable(data._embedded.flights[i]._links.self.href.split("/").pop()),
-                    departureDate: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[0]),
-                    departureTime: ko.observable(data._embedded.flights[i].departureDateTime.split("T")[1]),
-                    arrivalDate: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[0]),
-                    arrivalTime: ko.observable(data._embedded.flights[i].arrivalDateTime.split("T")[1]),
-                    numberOfSeats: ko.observable(data._embedded.flights[i].numberOfSeats),
-                    ticketPrice: ko.observable(data._embedded.flights[i].ticketPrice)
+                    id: ko.observable(flights[i]._links.self.href.split("/").pop()),
+                    departureDate: ko.observable(flights[i].departureDateTime.split("T")[0]),
+                    departureTime: ko.observable(flights[i].departureDateTime.split("T")[1]),
+                    arrivalDate: ko.observable(flights[i].arrivalDateTime.split("T")[0]),
+                    arrivalTime: ko.observable(flights[i].arrivalDateTime.split("T")[1]),
+                    numberOfSeats: ko.observable(flights[i].numberOfSeats),
+                    ticketPrice: ko.observable(flights[i].ticketPrice)
 
                 });
             }
         });
         self.ajax(self.touristsURI, 'GET').done(function (data) {
-            console.log(data);
+            //console.log(data);
             for (var i = 0; i < data.length; i++) {
-                if(data[i].dateOfBirth===null){
-                    data[i].dateOfBirth=["","",""]
+                if (data[i].dateOfBirth === null) {
+                    data[i].dateOfBirth = ["", "", ""]
                 }
                 self.tourists.push({
                     id: ko.observable(data[i].id),
@@ -325,17 +328,20 @@
         });
 
         self.add = function (flight) {
+            var departureDateTimeJoined = flight.departureDate + "T" + flight.departureTime;
+            var arrivalDateTimeJoined = flight.arrivalDate + "T" + flight.arrivalTime;
             var flightToSend = {
                 id: null,
-                departureDateTime: flight.departureDate + "T" + flight.departureTime,
-                arrivalDateTime: flight.arrivalDate + "T" + flight.arrivalTime,
+                departureDateTime: departureDateTimeJoined,
+                arrivalDateTime: arrivalDateTimeJoined,
                 numberOfSeats: flight.numberOfSeats,
                 touristList: null,
                 ticketPrice: flight.ticketPrice
             };
-            console.log(flightToSend);
+            //console.log(flightToSend);
             self.ajax(self.flightsURI, 'POST', flightToSend).done(function (data) {
-                console.log(data);
+
+                //console.log(data);
                 self.flights.push({
                     id: ko.observable(data._links.self.href.split("/").pop()),
                     departureDate: ko.observable(data.departureDateTime.split("T")[0]),
@@ -377,11 +383,12 @@
         }
 
     }
+
     function EditFlightViewModel() {
         var self = this;
         self.thisFlightTourists = ko.observableArray();
         self.allTourists = ko.observableArray();
-        self.flightView=ko.observable();
+        self.flightView = ko.observable();
 
         self.setFlight = function (flight) {
             self.flight = flight;
