@@ -23,7 +23,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public boolean addFlightToTourist(long touristId, long flightId) {
         Optional<Flight> thisFlight = flightRepository.findById(flightId);
-        if (!thisFlight.isPresent()) {
+        Optional<Tourist> thisTourist = touristRepository.findById(touristId);
+        if (!thisFlight.isPresent()||!thisTourist.isPresent()) {
             return false;
         }
         int numberOfSeatsInFlight = thisFlight.get().getNumberOfSeats();
@@ -31,7 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (seatsReserved >= numberOfSeatsInFlight) {
             return false;
         }
-        touristRepository.findById(touristId).get().getFlightList().add(thisFlight.get());
+        thisTourist.get().getFlightList().add(thisFlight.get());
         return true;
     }
 
@@ -46,7 +47,6 @@ public class ReservationServiceImpl implements ReservationService {
         if(!thisFlight.isPresent()||!thisTourist.isPresent()){
             return false;
         }
-        boolean success= thisTourist.get().getFlightList().remove(thisFlight.get());
-        return success;
+        return thisTourist.get().getFlightList().remove(thisFlight.get());
     }
 }

@@ -15,8 +15,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> findAll() {
-        flightRepository.findAll();
-        return null;
+        return flightRepository.findAll();
     }
 
     @Override

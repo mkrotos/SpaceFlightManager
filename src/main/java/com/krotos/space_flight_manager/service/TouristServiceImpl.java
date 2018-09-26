@@ -4,7 +4,6 @@ import com.krotos.space_flight_manager.model.Tourist;
 import com.krotos.space_flight_manager.repository.TouristRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,8 +21,7 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public Tourist add(Tourist tourist) {
-        Tourist savedTourist= touristRepository.save(tourist);
-        return savedTourist;
+        return touristRepository.save(tourist);
     }
 
     @Override
