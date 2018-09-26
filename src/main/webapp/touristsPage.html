@@ -285,6 +285,9 @@
                 })
                 ;
             }
+            self.tourists.sort(function (a, b) {
+                return a.id()>b.id();
+            });
         });
 
         self.getTouristList = function (touristId) {
@@ -303,6 +306,9 @@
 
                     });
                 }
+                editTouristViewModel.thisTouristFlights.sort(function (a, b) {
+                    return a.id()>b.id();
+                });
                 console.log(self.tempListOfFlights);
                 return self.tempListOfFlights;
             });
@@ -323,6 +329,11 @@
                     ticketPrice: ko.observable(flights[i].ticketPrice)
                 });
             }
+            self.flights.sort(function (a, b) {
+                return a.id()>b.id();
+            });                editTouristViewModel.thisTouristFlights.sort(function (a, b) {
+                return a.id()>b.id();
+            });
         });
 
         self.add = function (tourist) {

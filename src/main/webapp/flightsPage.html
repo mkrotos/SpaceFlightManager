@@ -280,6 +280,9 @@
                     })
                     ;
                 }
+                editFlightViewModel.thisFlightTourists.sort(function (a, b) {
+                    return a.id()>b.id();
+                });
                 return self.tempListOfFlights;
             });
         };
@@ -290,7 +293,7 @@
                 self.flights.remove(flight);
             })
 
-        }
+        };
 
         self.ajax(self.flightsURI, 'GET').done(function (data) {
             var flights = data._embedded.flights;
@@ -307,6 +310,9 @@
 
                 });
             }
+            self.flights.sort(function (a, b) {
+                return a.id()>b.id();
+            });
         });
         self.ajax(self.touristsURI, 'GET').done(function (data) {
             //console.log(data);
@@ -327,6 +333,9 @@
                 })
                 ;
             }
+            self.tourists.sort(function (a, b) {
+                return a.id()>b.id();
+            });
         });
 
         self.add = function (flight) {
