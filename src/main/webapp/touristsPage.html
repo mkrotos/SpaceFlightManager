@@ -75,8 +75,11 @@
             <div class="control-group">
                 <label class="control-label" for="inputSurname">Sex</label>
                 <div class="controls">
-                    <input data-bind="value: sex" type="text" id="inputSex" placeholder="ex man"
-                           style="width: 150px;">
+                    <select data-bind="
+                        options: sexOptions,
+                        optionsText: 'text',
+                        value: sex"
+                            style="width: 100px"></select>
                 </div>
             </div>
             <div class="control-group">
@@ -321,8 +324,9 @@
         });
 
         self.add = function (tourist) {
+            console.log(tourist);
             self.ajax(self.touristsURI, 'POST', tourist).done(function (data) {
-                //console.log(data);
+                console.log(data);
                 self.tourists.push({
                     id: ko.observable(data.id),
                     name: ko.observable(data.name),
@@ -340,24 +344,29 @@
         var self = this;
         self.name = ko.observable();
         self.surname = ko.observable();
-        self.sex = ko.observable();
+        self.sexOptions = ko.observableArray([
+            {text: "man"},
+            {text: "woman"}
+        ]);
+        self.sex=ko.observable();
         self.country = ko.observable();
         self.notes = ko.observable();
         self.dateOfBirth = ko.observable();
 
         self.addTourist = function () {
+
             $('#add').modal('hide');
             touristsViewModel.add({
                 name: self.name(),
                 surname: self.surname(),
-                sex: self.sex(),
+                sex: self.sex().text,
                 country: self.country(),
                 notes: self.notes(),
                 dateOfBirth: self.dateOfBirth()
             });
+            console.log(self.sex());
             self.name("");
             self.surname("");
-            self.sex("");
             self.country("");
             self.notes("");
             self.dateOfBirth("");
